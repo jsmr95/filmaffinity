@@ -6,35 +6,61 @@
     </head>
     <body>
         <?php
-            $pdo = new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
-            $numFilas = $pdo->exec("INSERT INTO generos (genero)
-                                    VALUES ('Costumbrismo')");
-            $st = $pdo->query('SELECT * from generos');
-            // $res = $st->fetchAll(); el st (PDOStatement) tb se puede recorrer
-         ?>
-    <table border="1" style="margin:auto"><!--El style lo centra-->
-        <thead>
-            <th>Id</th>
-            <th>Género</th>
-        </thead>
-        <tbody>
-            <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
-                                                    tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
-            <tr>
-                <td><?= $fila['id'] ?></td>
-                <td><?= $fila['genero'] ?></td>
-            </tr>
-            <?php endwhile ?>
+        $buscarTitulo = isset($_GET['buscarTitulo'])
+                        ? trim($_GET['buscarTitulo'])
+                        : '';
+        $pdo = new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
+        $st = $pdo->prepare('SELECT p.*, genero
+                            FROM peliculas p
+                            JOIN generos g
+                            ON genero_id = g.id
+                            WHERE position(lower(:titulo) in lower(titulo)) != 0'); //position es como mb_substrpos() de php, devuelve 0 si no encuentra nada. ponemos lower() de postgre para que no distinga entre mayu y minus
+        // $res = $st->fetchAll(); el st (PDOStatement) tb se puede recorrer
+        $st->execute([':titulo' => "$buscarTitulo"]);
+        ?>
+        <div>
+            <fieldset>
+                <legend>Buscar</legend>
+                <form action="" method="get">
+                    <label for="buscarTitulo">Buscar por título:</label>
+                    <input id="buscarTitulo" type="text" name="buscarTitulo"
+                    value="<?= $buscarTitulo ?>">
+                    <input type="submit" value="Buscar">
+                </form>
+            </fieldset>
+        </div>
 
-            <!-- <?php foreach ($st as $fila):?>
-            <tr>
-                <td><?= $fila['id'] ?></td>
-                <td><?= $fila['genero'] ?></td>
-            </tr>
-            <?php endforeach ?> -->
+    <div style="margin-top: 20px">
+        <table border="1" style="margin:auto"><!--El style lo centra-->
+            <thead>
+                <th>Título</th>
+                <th>Año</th>
+                <th>Sinopsis</th>
+                <th>Duración</th>
+                <th>Género</th>
+            </thead>
+            <tbody>
+                <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
+                                                        tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
+                <tr>
+                    <td><?= $fila['titulo'] ?></td>
+                    <td><?= $fila['anyo'] ?></td>
+                    <td><?= $fila['sinopsis'] ?></td>
+                    <td><?= $fila['duracion'] ?></td>
+                    <td><?= $fila['genero'] ?></td>
+                </tr>
+                <?php endwhile ?>
 
-            <!-- VALE CON EL FOREACH O CON EL WHILE, LAS DOS FORMAS SON OK!!-->
-        </tbody>
-    </table>
+                <!-- <?php foreach ($st as $fila):?>
+                <tr>
+                    <td><?= $fila['id'] ?></td>
+                    <td><?= $fila['genero'] ?></td>
+                </tr>
+                <?php endforeach ?> -->
+
+                <!-- VALE CON EL FOREACH O CON EL WHILE, LAS DOS FORMAS SON OK!!-->
+            </tbody>
+        </table>
+    </div>
     </body>
 </html>
