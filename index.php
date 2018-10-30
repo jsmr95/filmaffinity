@@ -6,10 +6,18 @@
     </head>
     <body>
         <?php
+        $pdo = new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
+        //Pregunto si vengo del confirm_borrado, si existe un id por POST, es que quiero borrar una fila
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
+            $st->execute([':id' => $id]); ?>
+            <h3>Película borrada correctamente.</h3>
+        <?php
+        }
         $buscarTitulo = isset($_GET['buscarTitulo'])
                         ? trim($_GET['buscarTitulo'])
                         : '';
-        $pdo = new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
         $st = $pdo->prepare('SELECT p.*, genero
                             FROM peliculas p
                             JOIN generos g
@@ -41,6 +49,7 @@
                 <th>Sinopsis</th>
                 <th>Duración</th>
                 <th>Género</th>
+                <th>Acciones</th>
             </thead>
             <tbody>
                 <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
@@ -51,8 +60,12 @@
                     <td><?= $fila['sinopsis'] ?></td>
                     <td><?= $fila['duracion'] ?></td>
                     <td><?= $fila['genero'] ?></td>
+                    <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>">Borrar</a></td>
+                    <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
                 </tr>
                 <?php endwhile ?>
+
+
 
                 <!-- <?php foreach ($st as $fila):?>
                 <tr>
