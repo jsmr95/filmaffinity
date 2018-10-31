@@ -86,6 +86,7 @@
                 <!-- VALE CON EL FOREACH O CON EL WHILE, LAS DOS FORMAS SON OK!!-->
             </tbody>
         </table>
+        <a href="insertar.php">Insertar una nueva pelicula</a>
     </div>
     </body>
 </html>
