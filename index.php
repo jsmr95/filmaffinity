@@ -2,7 +2,7 @@
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Bases de datos</title>
+        <title>FilmAffinity</title>
     </head>
     <body>
         <?php

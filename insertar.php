@@ -6,7 +6,7 @@
     </head>
     <body>
         <?php
-        require 'auxiliar.php';
+        require './auxiliar.php';
         const PAR = [
             'titulo' => '',
             'anyo' => '',
@@ -14,13 +14,22 @@
             'duracion' => '',
             'genero_id' => '',
         ];
-        $pdo = conectar();
 
         extract(PAR);
 
         if (isset($_POST['titulo'], $_POST['anyo'], $_POST['sinopsis'],
                   $_POST['duracion'], $_POST['genero_id'])) {
            extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
+           //Aqui empezaria el filtrado de las entradas(Comprobaciones de valores)
+           $pdo = conectar();
+           $st = $pdo->prepare('INSERT INTO peliculas (titulo,anyo,sinopsis,duracion,genero_id)
+                                        VALUES (:titulo, :anyo, :sinopsis, :duracion, :genero_id)');
+           $st->execute([':titulo' => $titulo,
+                         ':anyo' => $anyo,
+                         ':sinopsis' => $sinopsis,
+                         ':duracion' => $duracion,
+                         ':genero_id' => $genero_id]);
+            header('Location:index.php');
         }
 
         ?>
