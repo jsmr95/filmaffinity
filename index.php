@@ -91,20 +91,13 @@
                           <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
                       </tr>
                       <?php endwhile ?>
-
-
-
-                      <!-- <?php foreach ($st as $fila):?>
-                      <tr>
-                          <td><?= $fila['id'] ?></td>
-                          <td><?= $fila['genero'] ?></td>
-                      </tr>
-                      <?php endforeach ?> -->
-
-                      <!-- VALE CON EL FOREACH O CON EL WHILE, LAS DOS FORMAS SON OK!!-->
-                  </tbody>
+                </tbody>
               </table>
-              <a href="insertar.php">Insertar una nueva pelicula</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-center">
+                <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
             </div>
         </div>
       </div>
