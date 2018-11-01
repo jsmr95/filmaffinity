@@ -6,6 +6,7 @@
     </head>
     <body>
         <?php
+        //Constantes
         require './auxiliar.php';
         const PAR = [
             'titulo' => '',
