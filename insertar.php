@@ -9,6 +9,8 @@
     </head>
     <body>
       <?php
+      require './auxiliar.php';
+
         const PAR = [
             'titulo' => '',
             'anyo' => '',
@@ -20,6 +22,19 @@
          if (isset($_POST['titulo'], $_POST['anyo'], $_POST['sinopsis'],
                   $_POST['duracion'], $_POST['genero_id'])) {
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
+
+            // Filtrado de la entrada
+            $pdo = conectar();
+            $st = $pdo->prepare('INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
+                                 VALUES (:titulo, :anyo, :sinopsis, :duracion, :genero_id)');
+            $st->execute([
+                ':titulo' => $titulo,
+                ':anyo' => $anyo,
+                ':sinopsis' => $sinopsis,
+                ':duracion' => $duracion,
+                ':genero_id' => $genero_id,
+            ]);
+            header('Location: index.php');
          }
         ?>
         <br>
