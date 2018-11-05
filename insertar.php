@@ -28,30 +28,10 @@
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
 
             $error = [];
-            $fltAnyo = filter_input(INPUT_POST,'anyo',FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 9999], ]);
-            if ($fltAnyo === false) {
-                $error[] = 'El año no es correcto.';
-            }
-
-            $fltTitulo = trim(filter_input(INPUT_POST, 'titulo'));
-            if (mb_strlen($fltTitulo) > 255) {
-                $error[] = 'El titulo es demasiado largo.';
-            }
-
+            $fltTitulo = comprobarTitulo($error);
+            $fltAnyo = comprobarAnyo($error);
             $fltSinopsis = trim(filter_input(INPUT_POST,'sinopsis'));
-            $fltDuracion = trim(filter_input(INPUT_POST, 'duracion'));
-            if (mb_strlen($fltDuracion) !== '') {
-                $fltDuracion = filter_input(INPUT_POST, 'duracion', FILTER_VALIDATE_INT, ['options' => [
-                    'min_range' => 0,
-                    'max_range' => 32767,
-                ],
-            ]);
-            if ($fltDuracion === false) {
-                $error[] = 'La duración no es correcta.';
-            }
-        } else {
-            $fltDuracion = null;
-        }
+            $fltDuracion = comprobarDuracion($error);
 
             if (empty($error)) {
                 $pdo = conectar();
