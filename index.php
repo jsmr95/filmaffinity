@@ -78,7 +78,7 @@
                       <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
                                                               tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
                       <tr>
-                          <td><?= $fila['titulo'] ?></td>
+                          <td><?= filter_var($fila['titulo'],FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></td>
                           <td><?= $fila['anyo'] ?></td>
                           <td><?= $fila['sinopsis'] ?></td>
                           <td><?= $fila['duracion'] ?></td>

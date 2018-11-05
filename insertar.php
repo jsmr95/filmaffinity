@@ -19,20 +19,31 @@
             'genero_id' => '',
         ];
          extract(PAR);
+
+
+
+
          if (isset($_POST['titulo'], $_POST['anyo'], $_POST['sinopsis'],
                   $_POST['duracion'], $_POST['genero_id'])) {
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
+            
+            $fltAnyo = filter_input(INPUT_POST,'anyo',FILTER_VALIDATE_INT, ['flags' => ['min_range' => 0, 'max_range' => 9999], ]);
+            $fltTitulo = filter_input(INPUT_POST, 'titulo',);
 
-            // Filtrado de la entrada
+            if ($fltAnyo === false) {
+                echo '<h3>Erro: El año no es correcto.</h3>';
+            }
+
+
             $pdo = conectar();
             $st = $pdo->prepare('INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
                                  VALUES (:titulo, :anyo, :sinopsis, :duracion, :genero_id)');
             $st->execute([
-                ':titulo' => $titulo,
-                ':anyo' => $anyo,
-                ':sinopsis' => $sinopsis,
-                ':duracion' => $duracion,
-                ':genero_id' => $genero_id,
+                ':titulo' => $fltTitulo,
+                ':anyo' => $fltAnyo,
+                ':sinopsis' => $fltSinopsis,
+                ':duracion' => $fltDuracion,
+                ':genero_id' => $fltGenero_id,
             ]);
             header('Location: index.php');
          }
