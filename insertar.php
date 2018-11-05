@@ -26,27 +26,52 @@
          if (isset($_POST['titulo'], $_POST['anyo'], $_POST['sinopsis'],
                   $_POST['duracion'], $_POST['genero_id'])) {
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
-            
-            $fltAnyo = filter_input(INPUT_POST,'anyo',FILTER_VALIDATE_INT, ['flags' => ['min_range' => 0, 'max_range' => 9999], ]);
-            $fltTitulo = filter_input(INPUT_POST, 'titulo',);
 
+            $error = [];
+            $fltAnyo = filter_input(INPUT_POST,'anyo',FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 9999], ]);
             if ($fltAnyo === false) {
-                echo '<h3>Erro: El año no es correcto.</h3>';
+                $error[] = 'El año no es correcto.';
             }
 
+            $fltTitulo = trim(filter_input(INPUT_POST, 'titulo'));
+            if (mb_strlen($fltTitulo) > 255) {
+                $error[] = 'El titulo es demasiado largo.';
+            }
 
-            $pdo = conectar();
-            $st = $pdo->prepare('INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
-                                 VALUES (:titulo, :anyo, :sinopsis, :duracion, :genero_id)');
-            $st->execute([
-                ':titulo' => $fltTitulo,
-                ':anyo' => $fltAnyo,
-                ':sinopsis' => $fltSinopsis,
-                ':duracion' => $fltDuracion,
-                ':genero_id' => $fltGenero_id,
+            $fltSinopsis = trim(filter_input(INPUT_POST,'sinopsis'));
+            $fltDuracion = trim(filter_input(INPUT_POST, 'duracion'));
+            if (mb_strlen($fltDuracion) !== '') {
+                $fltDuracion = filter_input(INPUT_POST, 'duracion', FILTER_VALIDATE_INT, ['options' => [
+                    'min_range' => 0,
+                    'max_range' => 32767,
+                ],
             ]);
-            header('Location: index.php');
+            if ($fltDuracion === false) {
+                $error[] = 'La duración no es correcta.';
+            }
+        } else {
+            $fltDuracion = null;
+        }
+
+            if (empty($error)) {
+                $pdo = conectar();
+                $st = $pdo->prepare('INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
+                VALUES (:titulo, :anyo, :sinopsis, :duracion, :genero_id)');
+                $st->execute([
+                    ':titulo' => $fltTitulo,
+                    ':anyo' => $fltAnyo,
+                    ':sinopsis' => $fltSinopsis,
+                    ':duracion' => $fltDuracion,
+                    ':genero_id' => $fltGenero_id,
+                ]);
+                header('Location: index.php');
+            } else {
+                foreach ($error as $err) {
+                    echo "<h4>Error: $err</h4>";
+                }
+            }
          }
+
         ?>
         <br>
         <div class="container">
