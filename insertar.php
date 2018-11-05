@@ -32,6 +32,7 @@
             $fltAnyo = comprobarAnyo($error);
             $fltSinopsis = trim(filter_input(INPUT_POST,'sinopsis'));
             $fltDuracion = comprobarDuracion($error);
+            $fltGenero_id = comprobarGeneroId($error);
 
             if (empty($error)) {
                 $pdo = conectar();

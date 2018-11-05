@@ -48,3 +48,12 @@
         }
         return $fltDuracion;
     }
+
+    function comprobarGeneroId(&$error)
+    {
+        $fltGeneroId = filter_input(INPUT_POST, 'genero_id',FILTER_VALIDATE_INT);
+        if ($fltGeneroId !== false)
+        {
+            //Buscar en la base de datos si existe ese género en dicha tabla.
+        }
+    }
