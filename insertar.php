@@ -26,13 +26,14 @@
          if (isset($_POST['titulo'], $_POST['anyo'], $_POST['sinopsis'],
                   $_POST['duracion'], $_POST['genero_id'])) {
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
+            $pdo = conectar();
 
             $error = [];
             $fltTitulo = comprobarTitulo($error);
             $fltAnyo = comprobarAnyo($error);
             $fltSinopsis = trim(filter_input(INPUT_POST,'sinopsis'));
             $fltDuracion = comprobarDuracion($error);
-            $fltGenero_id = comprobarGeneroId($error);
+            $fltGeneroId = comprobarGeneroId($pdo, $error);
 
             if (empty($error)) {
                 $pdo = conectar();
@@ -43,7 +44,7 @@
                     ':anyo' => $fltAnyo,
                     ':sinopsis' => $fltSinopsis,
                     ':duracion' => $fltDuracion,
-                    ':genero_id' => $fltGenero_id,
+                    ':genero_id' => $fltGeneroId,
                 ]);
                 header('Location: index.php');
             } else {
