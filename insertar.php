@@ -24,11 +24,11 @@
          //TAREA resumir esto de abajo
 
          try{
+            $error = [];
             comprobarParametros(PAR);
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
             $pdo = conectar();
 
-            $error = [];
             $flt['titulo'] = comprobarTitulo($error);
             $flt['anyo'] = comprobarAnyo($error);
             $flt['sinopsis'] = trim(filter_input(INPUT_POST,'sinopsis'));
@@ -37,12 +37,10 @@
             comprobarErrores($error);
             insertarPelicula($pdo, compact(['fltTitulo','fltAnyo','fltSinopsis','fltDuracion','$fltGeneroId']));
             header('Location: index.php');
-        } catch (EmptyParamException $e){
+        } catch (EmptyParamException|ValidationException $e){
             //No hago nada
         } catch (ParamException $e){
             header('Location: index.php');
-        } catch (ValidationException $e){
-            //No hago nada
         }
         ?>
         <br>
