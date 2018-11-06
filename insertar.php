@@ -21,7 +21,7 @@
          extract(PAR);
 
 
-
+         //TAREA resumir esto de abajo
 
          if (isset($_POST['titulo'], $_POST['anyo'], $_POST['sinopsis'],
                   $_POST['duracion'], $_POST['genero_id'])) {

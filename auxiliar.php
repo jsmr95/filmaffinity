@@ -16,7 +16,9 @@
     function comprobarTitulo(&$error)
     {
         $fltTitulo = trim(filter_input(INPUT_POST, 'titulo'));
-        if (mb_strlen($fltTitulo) > 255) {
+        if ($fltTitulo === '') {
+            $error [] = 'El titulo es obligatorio.';
+        } elseif (mb_strlen($fltTitulo) > 255) {
             $error[] = 'El titulo es demasiado largo.';
         }
         return $fltTitulo;
