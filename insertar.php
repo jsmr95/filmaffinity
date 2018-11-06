@@ -57,11 +57,15 @@
                     <form action="" method="post">
                         <div class="form-group <?= hasError('titulo', $error) ?>">
                             <label for="titulo" class="control-label">Título</label>
-                            <input type="text" name="titulo" class="form-control" id="titulo" value="<?= $titulo ?>">
+                            <input type="text" name="titulo" class="form-control" id="titulo" value="<?= $titulo ?>" >
+                            <?php if (isset($error['titulo'])){ ?>
+                                <small class="help-block"> <?= $error['titulo'] ?></small> <?php } ?>
                         </div>
                         <div class="form-group <?= hasError('anyo', $error) ?>">
                             <label for="anyo" class="control-label">Año</label>
                             <input type="text" name="anyo" class="form-control" id="anyo" value="<?= $anyo ?>">
+                            <?php if (isset($error['anyo'])){ ?>
+                                <small class="help-block"> <?= $error['anyo'] ?></small> <?php } ?>
                         </div>
                         <div class="form-group">
                             <label for="sinopsis" class="control-label">Sinopsis</label>
@@ -70,10 +74,14 @@
                         <div class="form-group <?= hasError('duracion', $error) ?>">
                             <label for="duracion" class="control-label">Duración</label>
                             <input type="text" name="duracion" class="form-control" id="duracion" value="<?= $duracion ?>">
+                            <?php if (isset($error['duracion'])){ ?>
+                                <small class="help-block"> <?= $error['duracion'] ?></small> <?php } ?>
                         </div>
                         <div class="form-group <?= hasError('genero_id', $error) ?>">
                             <label for="genero_id" class="control-label">Género</label>
                             <input type="text" name="genero_id" class="form-control" id="genero_id" value="<?= $genero_id ?>">
+                            <?php if (isset($error['genero_id'])){ ?>
+                                <small class="help-block"> <?= $error['genero_id'] ?></small> <?php } ?>
                         </div>
                         <input type="submit" value="Insertar" class="btn btn-success">
                         <a href="index.php" class="btn btn-info">Volver</a>
