@@ -105,3 +105,8 @@ function hasError($key, $error){
 
     return array_key_exists($key, $error) ? 'has-error' : '';
 }
+
+function mensajeError($key, $error){
+    if (isset($error[$key])){ ?>
+        <small class="help-block"> <?= $error[$key] ?></small> <?php } 
+}
