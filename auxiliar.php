@@ -27,9 +27,9 @@ function comprobarTitulo(&$error)
 {
     $fltTitulo = trim(filter_input(INPUT_POST, 'titulo'));
     if ($fltTitulo === '') {
-        $error [] = 'El titulo es obligatorio.';
+        $error ['titulo'] = 'El titulo es obligatorio.';
     } elseif (mb_strlen($fltTitulo) > 255) {
-        $error[] = 'El titulo es demasiado largo.';
+        $error['titulo'] = 'El titulo es demasiado largo.';
     }
     return $fltTitulo;
 }
@@ -38,7 +38,7 @@ function comprobarAnyo(&$error)
 {
     $fltAnyo = filter_input(INPUT_POST,'anyo',FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 9999], ]);
     if ($fltAnyo === false) {
-        $error[] = 'El año no es correcto.';
+        $error['anyo'] = 'El año no es correcto.';
     }
     return $fltAnyo;
 }
@@ -53,7 +53,7 @@ function comprobarDuracion(&$error)
         ],
     ]);
         if ($fltDuracion === false) {
-            $error[] = 'La duración no es correcta.';
+            $error['duracion'] = 'La duración no es correcta.';
         }
     } else {
     $fltDuracion = null;
@@ -69,10 +69,10 @@ function comprobarGeneroId($pdo, &$error)
         $st = $pdo->prepare('SELECT id from generos WHERE id = :id');
         $st-> execute([':id' => $fltGeneroId]);
         if ($st->fetch() === false){
-            $error [] = 'No existe ese género.';
+            $error ['genero_id'] = 'No existe ese género.';
         }
     } else {
-        $error [] = 'El género no es correcto.';
+        $error ['genero_id'] = 'El género no es correcto.';
     }
     return $fltGeneroId;
 }
@@ -99,4 +99,9 @@ function comprobarParametros($par)
         !empty(array_diff_key($_POST,$par))) {
             throw new ParamException();
         }
+}
+
+function hasError($key, $error){
+
+    return array_key_exists($key, $error) ? 'has-error' : '';
 }

@@ -55,24 +55,24 @@
                 </div>
                 <div class="panel-body">
                     <form action="" method="post">
-                        <div class="form-group">
-                            <label for="titulo">Título</label>
+                        <div class="form-group <?= hasError('titulo', $error) ?>">
+                            <label for="titulo" class="control-label">Título</label>
                             <input type="text" name="titulo" class="form-control" id="titulo" value="<?= $titulo ?>">
                         </div>
-                        <div class="form-group">
-                            <label for="anyo">Año</label>
+                        <div class="form-group <?= hasError('anyo', $error) ?>">
+                            <label for="anyo" class="control-label">Año</label>
                             <input type="text" name="anyo" class="form-control" id="anyo" value="<?= $anyo ?>">
                         </div>
                         <div class="form-group">
-                            <label for="sinopsis">Sinopsis</label>
+                            <label for="sinopsis" class="control-label">Sinopsis</label>
                             <textarea name="sinopsis" rows="8" cols="80" class="form-control" id="sinopsis"><?= $sinopsis ?></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="duracion">Duración</label>
+                        <div class="form-group <?= hasError('duracion', $error) ?>">
+                            <label for="duracion" class="control-label">Duración</label>
                             <input type="text" name="duracion" class="form-control" id="duracion" value="<?= $duracion ?>">
                         </div>
-                        <div class="form-group">
-                            <label for="genero_id">Género</label>
+                        <div class="form-group <?= hasError('genero_id', $error) ?>">
+                            <label for="genero_id" class="control-label">Género</label>
                             <input type="text" name="genero_id" class="form-control" id="genero_id" value="<?= $genero_id ?>">
                         </div>
                         <input type="submit" value="Insertar" class="btn btn-success">
