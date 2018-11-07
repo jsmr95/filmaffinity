@@ -130,9 +130,11 @@ function modificarPelicula($pdo, $fila, $id){
     $st->execute($fila + ['id' => $id]);
 }
 
-function mostrarFormulario($valores, $error, $accion)
+function mostrarFormulario($valores, $error, $pdo, $accion)
 {
     extract($valores);
+    $st = $pdo->query('SELECT * FROM generos');
+    $generos = $st->fetchAll();
     ?>
     <br>
     <div class="panel panel-primary">
@@ -170,9 +172,14 @@ function mostrarFormulario($valores, $error, $accion)
                 </div>
                 <div class="form-group <?= hasError('genero_id', $error) ?>">
                     <label for="genero_id" class="control-label">Género</label>
-                    <input id="genero_id" type="text" name="genero_id"
-                           class="form-control"
-                           value="<?= h($genero_id)?>">
+                    <select id="genero_id" class="form-control" name="genero_id">
+                        <?php
+                        foreach ($generos as $gen) { ?>
+                            <option value="<?= $gen['id'] ?>">
+                                <?= $gen['genero'] ?>
+                            </option>
+                        <?php} ?>
+                    </select>
                     <?php mensajeError('genero_id', $error) ?>
                 </div>
                 <input type="submit" value="<?= h($accion) ?>"
