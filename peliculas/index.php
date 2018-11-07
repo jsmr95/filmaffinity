@@ -83,12 +83,16 @@
                           <td><?= $fila['sinopsis'] ?></td>
                           <td><?= $fila['duracion'] ?></td>
                           <td><?= $fila['genero'] ?></td>
+                          <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
                           <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
                                  class="btn btn-xs btn-danger">
                                  Borrar
                                </a>
+                               <a href="modificar.php?id=<?= $fila['id'] ?>"
+                                 class="btn btn-xs btn-info">
+                                 Modificar
+                               </a>
                           </td>
-                          <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
                       </tr>
                       <?php endwhile ?>
                 </tbody>
