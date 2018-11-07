@@ -35,7 +35,7 @@
             $flt['duracion'] = comprobarDuracion($error);
             $flt['genero_id'] = comprobarGeneroId($pdo, $error);
             comprobarErrores($error);
-            insertarPelicula($pdo, compact(['fltTitulo','fltAnyo','fltSinopsis','fltDuracion','$fltGeneroId']));
+            insertarPelicula($pdo, $flt);
             header('Location: index.php');
         } catch (EmptyParamException|ValidationException $e){
             //No hago nada

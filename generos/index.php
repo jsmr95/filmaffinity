@@ -83,7 +83,7 @@
                           <td><?= $fila['sinopsis'] ?></td>
                           <td><?= $fila['duracion'] ?></td>
                           <td><?= $fila['genero'] ?></td>
-                          <td><a href="generos/confirm_borrado.php?id=<?= $fila['id'] ?>"
+                          <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
                                  class="btn btn-xs btn-danger">
                                  Borrar
                                </a>
@@ -97,7 +97,7 @@
         </div>
         <div class="row">
             <div class="text-center">
-                <a href="generos/insertar.php" class="btn btn-info">Insertar una nueva película</a>
+                <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
             </div>
         </div>
       </div>
