@@ -32,30 +32,30 @@
                 }
                 $pdo->commit();
             }
-            $buscarTitulo = isset($_GET['buscarTitulo'])
-                            ? trim($_GET['buscarTitulo'])
+            $buscarGenero = isset($_GET['buscarGenero'])
+                            ? trim($_GET['buscarGenero'])
                             : '';
             $st = $pdo->prepare('SELECT p.*, genero
                                 FROM peliculas p
                                 JOIN generos g
                                 ON genero_id = g.id
-                                WHERE position(lower(:titulo) in lower(titulo)) != 0'); //position es como mb_substrpos() de php, devuelve 0
+                                WHERE position(lower(:genero) in lower(genero)) != 0'); //position es como mb_substrpos() de php, devuelve 0
                                                                                         //si no encuentra nada. ponemos lower() de postgre para
                                                                                         //que no distinga entre mayu y minus
             //En execute(:titulo => "$valor"), indicamos lo que vale nuestros marcadores de prepare(:titulo)
-            $st->execute([':titulo' => "$buscarTitulo"]);
+            $st->execute([':genero' => "$buscarGenero"]);
             ?>
           </div>
         <div class="row" id="busqueda">
           <div class="col-md-12">
-            <!-- Creamos un buscador de peliculas -->
+            <!-- Creamos un buscador de peliculas por Genero-->
               <fieldset>
                 <legend>Buscar</legend>
                 <form action="" method="get" class="form-inline">
                   <div class="form-group">
-                    <label for="buscarTitulo">Buscar por título:</label>
-                    <input id="buscarTitulo" type="text" name="buscarTitulo"
-                    value="<?= $buscarTitulo ?>" class="form-control">
+                    <label for="buscarGenero">Buscar por género:</label>
+                    <input id="buscarGenero" type="text" name="buscarGenero"
+                    value="<?= $buscarGenero ?>" class="form-control">
                   </div>
                   <input type="submit" value="Buscar" class="btn btn-primary">
                 </form>
