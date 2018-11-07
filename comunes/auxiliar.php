@@ -1,5 +1,13 @@
 <?php
 
+const PAR = [
+    'titulo' => '',
+    'anyo' => '',
+    'sinopsis' => '',
+    'duracion' => '',
+    'genero_id' => '',
+];
+
 class ValidationException extends Exception
 {}
 
@@ -16,7 +24,7 @@ function conectar()
 
 function buscarPelicula($pdo, $id)
 {
-    $st = $pdo->prepare('SELECT id from peliculas WHERE id = :id');
+    $st = $pdo->prepare('SELECT * from peliculas WHERE id = :id');
     //si no hay alguna fila que cumple con el id, te manda a la misma pagina
     $st->execute([':id' => $id]);
     //Te devuelve la pelicula, si no esta, devuelve FALSE
@@ -108,5 +116,90 @@ function hasError($key, $error){
 
 function mensajeError($key, $error){
     if (isset($error[$key])){ ?>
-        <small class="help-block"> <?= $error[$key] ?></small> <?php } 
+        <small class="help-block"> <?= $error[$key] ?></small> <?php }
+}
+
+function modificarPelicula($pdo, $fila, $id){
+    $st = $pdo->prepare('UPDATE peliculas
+                            SET titulo = :titulo
+                                , anyo = :anyo
+                                , sinopsis = :sinopsis
+                                , duracion = :duracion
+                                , genero_id = :genero_id
+                            WHERE id = :id');
+    $st->execute($fila + ['id' => $id]);
+}
+
+function mostrarFormulario($valores, $error, $accion)
+{
+    extract($valores);
+    ?>
+    <br>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"><?= $accion ?> una nueva película...</h3>
+        </div>
+        <div class="panel-body">
+            <form action="" method="post">
+                <div class="form-group <?= hasError('titulo', $error) ?>">
+                    <label for="titulo" class="control-label">Título</label>
+                    <input id="titulo" type="text" name="titulo"
+                           class="form-control" value="<?= $titulo ?>">
+                    <?php mensajeError('titulo', $error) ?>
+                </div>
+                <div class="form-group <?= hasError('anyo', $error) ?>">
+                    <label for="anyo" class="control-label">Año</label>
+                    <input id="anyo" type="text" name="anyo"
+                           class="form-control" value="<?= $anyo ?>">
+                    <?php mensajeError('anyo', $error) ?>
+                </div>
+                <div class="form-group">
+                    <label for="sinopsis" class="control-label">Sinopsis</label>
+                    <textarea id="sinopsis"
+                              name="sinopsis"
+                              rows="8"
+                              cols="80"
+                              class="form-control"><?= $sinopsis ?></textarea>
+                </div>
+                <div class="form-group <?= hasError('duracion', $error) ?>">
+                    <label for="duracion" class="control-label">Duración</label>
+                    <input id="duracion" type="text" name="duracion"
+                           class="form-control"
+                           value="<?= $duracion ?>">
+                    <?php mensajeError('duracion', $error) ?>
+                </div>
+                <div class="form-group <?= hasError('genero_id', $error) ?>">
+                    <label for="genero_id" class="control-label">Género</label>
+                    <input id="genero_id" type="text" name="genero_id"
+                           class="form-control"
+                           value="<?= $genero_id?>">
+                    <?php mensajeError('genero_id', $error) ?>
+                </div>
+                <input type="submit" value="<?= $accion ?>"
+                       class="btn btn-success">
+                <a href="index.php" class="btn btn-info">Volver</a>
+            </form>
+        </div>
+    </div>
+    <?php
+}
+
+function h($cadena){
+    return htmlspecialchars($cadena, ENT_QUOTES);
+}
+
+function comprobarId(){
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if ($id === null || $id === false) {
+        throw new ParamException();
+    }
+    return $id;
+}
+
+function comprobarPelicula($pdo, $id){
+    $fila = buscarPelicula($pdo, $id);
+    if ($fila === false) {
+        throw new ParamException();
+    }
+    return $fila;
 }

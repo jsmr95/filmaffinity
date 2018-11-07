@@ -78,11 +78,11 @@
                       <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
                                                               tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
                       <tr>
-                          <td><?= filter_var($fila['titulo'],FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></td>
-                          <td><?= $fila['anyo'] ?></td>
-                          <td><?= $fila['sinopsis'] ?></td>
-                          <td><?= $fila['duracion'] ?></td>
-                          <td><?= $fila['genero'] ?></td>
+                          <td><?= h($fila['titulo']) ?></td>
+                          <td><?= h($fila['anyo']) ?></td>
+                          <td><?= h($fila['sinopsis']) ?></td>
+                          <td><?= h($fila['duracion']) ?></td>
+                          <td><?= h($fila['genero']) ?></td>
                           <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
                           <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
                                  class="btn btn-xs btn-danger">
