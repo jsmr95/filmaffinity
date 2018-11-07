@@ -20,9 +20,6 @@
         ];
          extract(PAR);
 
-
-         //TAREA resumir esto de abajo
-
          try{
             $error = [];
             comprobarParametros(PAR);
