@@ -101,12 +101,13 @@ function comprobarGenero($pdo, &$error){
       $error ['genero'] = 'El género es obligatorio.';
   } elseif (mb_strlen($fltGenero) > 255) {
       $error['genero'] = 'El género es demasiado largo.';
-  }
-  $st = $pdo->prepare('SELECT * FROM generos WHERE lower(:genero) = lower($fltGenero)');
+  }else {
+  $st = $pdo->prepare('SELECT * FROM generos WHERE lower(genero) = lower(:genero)');
   $st->execute([':genero' => $fltGenero]);
   if ($st->fetch()) {
     $error['genero'] = 'Ese género ya existe, y los géneros son únicos.';
   }
+}
   return $fltGenero;
 }
 

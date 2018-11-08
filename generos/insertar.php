@@ -32,13 +32,13 @@
         <div class="container">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Insertar una nueva película...</h3>
+                    <h3 class="panel-title">Insertar un nuevo Género...</h3>
                 </div>
                 <div class="panel-body">
                     <form action="" method="post">
                         <div class="form-group <?= hasError('genero', $error) ?>">
                             <label for="titulo" class="control-label">Género</label>
-                            <input type="text" name="genero" class="form-control" id="genero" value="<?= $genero ?>" >
+                            <input type="text" name="genero" class="form-control" id="genero" value="<?= h($genero) ?>" >
                             <?php mensajeError('genero', $error) ?>
                         </div>
                         <input type="submit" value="Insertar" class="btn btn-success">
