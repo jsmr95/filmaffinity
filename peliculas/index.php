@@ -107,9 +107,9 @@
         <nav class="navbar navbar-default navbar-fixed-bottom navbar-inverse">
         <div class="container">
             <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
-            <form action="" class="navbar-form navbar-right" role="search">
-              <button type="submit" class="btn btn-info">Aceptar Cookies</button>
-            </form>
+            <p class="navbar-text navbar-right">
+                <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+            </p>
         </div>
         </nav>
       </div>
