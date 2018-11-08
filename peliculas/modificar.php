@@ -1,3 +1,4 @@
+<?php session_start()?>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -24,6 +25,8 @@
          $flt['duracion'] = comprobarDuracion($error);
          $flt['genero_id'] = comprobarGeneroId($pdo, $error);
          comprobarErrores($error);
+         //Creamos el mensaje de modificacion en $_SESSION
+         $_SESSION['mensaje'] = 'Película modificada correctamente.';
          modificarPelicula($pdo, $flt, $id);
          header('Location: index.php');
      } catch (EmptyParamException|ValidationException $e){
