@@ -21,10 +21,13 @@
                 $id = $_POST['id'];
                 $pdo->beginTransaction();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
-                if (!buscarPelicula($pdo, $id)) { ?>
+                if (!buscarGenero($pdo, $id)) { ?>
                     <h3>Error: El género no existe!</h3>
                 <?php
-                } else {
+              } elseif (compruebaGeneroEnUso($pdo, $id)) { ?>
+                <h3> Error: El género está usandose por una pelicula, no se puede borrar un Género en uso! </h3>
+                <?php
+              } else {
                     $st = $pdo->prepare('DELETE FROM generos WHERE id = :id');
                     $st->execute([':id' => $id]); ?>
                     <h3>Género borrado correctamente.</h3>

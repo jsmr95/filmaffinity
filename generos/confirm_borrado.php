@@ -17,7 +17,7 @@
         }
         $pdo = conectar();
         //si no hay alguna fila que cumple con el id, te manda a la misma pagina
-        if (!buscarPelicula($pdo, $id)) {
+        if (!buscarGenero($pdo, $id)) {
             header('Location: index.php');
         }
         ?>
