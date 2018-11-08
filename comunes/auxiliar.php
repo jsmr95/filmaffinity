@@ -135,6 +135,7 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
     extract($valores);
     $st = $pdo->query('SELECT * FROM generos');
     $generos = $st->fetchAll();
+
     ?>
     <br>
     <div class="panel panel-primary">
@@ -173,12 +174,11 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
                 <div class="form-group <?= hasError('genero_id', $error) ?>">
                     <label for="genero_id" class="control-label">Género</label>
                     <select id="genero_id" class="form-control" name="genero_id">
+
                         <?php
-                        foreach ($generos as $gen) { ?>
-                            <option value="<?= $gen['id'] ?>">
-                                <?= $gen['genero'] ?>
-                            </option>
-                        <?php} ?>
+                        foreach ($generos as $genero):
+                            generoSeleccionado($genero, $genero_id);
+                        endforeach ?>
                     </select>
                     <?php mensajeError('genero_id', $error) ?>
                 </div>
@@ -209,4 +209,19 @@ function comprobarPelicula($pdo, $id){
         throw new ParamException();
     }
     return $fila;
+}
+
+function generoSeleccionado($genero, $genero_id){
+
+  if ($genero['id'] == $genero_id){ ?>
+    <option value="<?= $genero['id'] ?>" selected>
+        <?= $genero['genero'] ?>
+    </option>
+  <?php
+  } else { ?>
+    <option value="<?= $genero['id'] ?>" >
+        <?= $genero['genero'] ?>
+    </option>
+  <?php
+  }
 }
