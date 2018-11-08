@@ -8,6 +8,10 @@ const PAR = [
     'genero_id' => '',
 ];
 
+const PAR1 = [
+    'genero' => '',
+];
+
 class ValidationException extends Exception
 {}
 
@@ -91,6 +95,21 @@ function comprobarGeneroId($pdo, &$error)
     return $fltGeneroId;
 }
 
+function comprobarGenero($pdo, &$error){
+  $fltGenero = filter_input(INPUT_POST, 'genero');
+  if ($fltGenero === '') {
+      $error ['genero'] = 'El género es obligatorio.';
+  } elseif (mb_strlen($fltGenero) > 255) {
+      $error['genero'] = 'El género es demasiado largo.';
+  }
+  $st = $pdo->prepare('SELECT * FROM generos WHERE lower(:genero) = lower($fltGenero)');
+  $st->execute([':genero' => $fltGenero]);
+  if ($st->fetch()) {
+    $error['genero'] = 'Ese género ya existe, y los géneros son únicos.';
+  }
+  return $fltGenero;
+}
+
 function comprobarErrores(&$error){
     if (!empty($error)) {
         throw new ValidationException();
@@ -102,6 +121,12 @@ function insertarPelicula($pdo, $fila)
     $st = $pdo->prepare('INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
     VALUES (:titulo, :anyo, :sinopsis, :duracion, :genero_id)');
     $st->execute($fila);
+}
+
+function insertarGenero($pdo, $fila){
+  $st = $pdo->prepare('INSERT INTO generos (genero)
+  VALUES (:genero)');
+  $st->execute($fila);
 }
 
 function comprobarParametros($par)
