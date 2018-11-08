@@ -22,6 +22,12 @@ function conectar()
     return new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
 }
 
+function buscarGenero($pdo, $id){
+  $st = $pdo->prepare('SELECT * FROM generos WHERE id = :id');
+  $st->execute([':id' => $id]);
+  return $st->fetch();
+}
+
 function buscarPelicula($pdo, $id)
 {
     $st = $pdo->prepare('SELECT * from peliculas WHERE id = :id');
@@ -218,4 +224,10 @@ function comprobarPelicula($pdo, $id){
 function generoSeleccionado($genero, $genero_id){
 
   return $genero == $genero_id ? "selected" : "";
+}
+
+function compruebaGeneroEnUso($pdo, $id){
+  $st = $pdo->prepare('SELECT * from peliculas WHERE genero_id = :id;');
+  $st->execute([':id' => $id]);
+  return $st->fetch();
 }

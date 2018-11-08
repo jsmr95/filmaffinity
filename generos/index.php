@@ -21,13 +21,16 @@
                 $id = $_POST['id'];
                 $pdo->beginTransaction();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
-                if (!buscarPelicula($pdo, $id)) { ?>
-                    <h3>Error: La pelicula no existe!</h3>
+                if (!buscarGenero($pdo, $id)) { ?>
+                    <h3>Error: El género no existe!</h3>
                 <?php
-                } else {
-                    $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
+              } elseif (compruebaGeneroEnUso($pdo, $id)) { ?>
+                <h3> Error: El género está usandose por una pelicula, no se puede borrar un Género en uso! </h3>
+                <?php
+              } else {
+                    $st = $pdo->prepare('DELETE FROM generos WHERE id = :id');
                     $st->execute([':id' => $id]); ?>
-                    <h3>Película borrada correctamente.</h3>
+                    <h3>Género borrado correctamente.</h3>
             <?php
                 }
                 $pdo->commit();
@@ -35,10 +38,8 @@
             $buscarGenero = isset($_GET['buscarGenero'])
                             ? trim($_GET['buscarGenero'])
                             : '';
-            $st = $pdo->prepare('SELECT p.*, genero
-                                FROM peliculas p
-                                JOIN generos g
-                                ON genero_id = g.id
+            $st = $pdo->prepare('SELECT *
+                                FROM generos
                                 WHERE position(lower(:genero) in lower(genero)) != 0'); //position es como mb_substrpos() de php, devuelve 0
                                                                                         //si no encuentra nada. ponemos lower() de postgre para
                                                                                         //que no distinga entre mayu y minus
@@ -64,13 +65,9 @@
           </div>
           <hr>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
               <table class="table table-bordered table-hover table-striped">
                   <thead>
-                      <th>Título</th>
-                      <th>Año</th>
-                      <th>Sinopsis</th>
-                      <th>Duración</th>
                       <th>Género</th>
                       <th>Acciones</th>
                   </thead>
@@ -78,11 +75,7 @@
                       <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
                                                               tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
                       <tr>
-                          <td><?= filter_var($fila['titulo'],FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?></td>
-                          <td><?= $fila['anyo'] ?></td>
-                          <td><?= $fila['sinopsis'] ?></td>
-                          <td><?= $fila['duracion'] ?></td>
-                          <td><?= $fila['genero'] ?></td>
+                          <td><?= h($fila['genero']) ?></td>
                           <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
                                  class="btn btn-xs btn-danger">
                                  Borrar
@@ -97,7 +90,7 @@
         </div>
         <div class="row">
             <div class="text-center">
-                <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
+                <a href="insertar.php" class="btn btn-info">Insertar un nuevo género</a>
             </div>
         </div>
       </div>
