@@ -22,12 +22,12 @@
                 $pdo->beginTransaction();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
                 if (!buscarPelicula($pdo, $id)) { ?>
-                    <h3>Error: La pelicula no existe!</h3>
+                    <h3>Error: El género no existe!</h3>
                 <?php
                 } else {
-                    $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
+                    $st = $pdo->prepare('DELETE FROM generos WHERE id = :id');
                     $st->execute([':id' => $id]); ?>
-                    <h3>Película borrada correctamente.</h3>
+                    <h3>Género borrado correctamente.</h3>
             <?php
                 }
                 $pdo->commit();
@@ -87,7 +87,7 @@
         </div>
         <div class="row">
             <div class="text-center">
-                <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
+                <a href="insertar.php" class="btn btn-info">Insertar un nuevo género</a>
             </div>
         </div>
       </div>
