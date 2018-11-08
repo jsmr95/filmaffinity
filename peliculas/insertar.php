@@ -15,9 +15,9 @@
 
          try{
             $error = [];
+            $pdo = conectar();
             comprobarParametros(PAR);
             $valores = array_map('trim', $_POST);
-            $pdo = conectar();
 
             $flt['titulo'] = comprobarTitulo($error);
             $flt['anyo'] = comprobarAnyo($error);
