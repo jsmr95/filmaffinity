@@ -177,7 +177,11 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
 
                         <?php
                         foreach ($generos as $genero):
-                            generoSeleccionado($genero, $genero_id);
+                          ?>
+                            <option value="<?= $genero['id'] ?>" <?= generoSeleccionado($genero['id'], $genero_id) ?>>
+                                <?= $genero['genero'] ?>
+                            </option>
+                          <?php
                         endforeach ?>
                     </select>
                     <?php mensajeError('genero_id', $error) ?>
@@ -213,15 +217,5 @@ function comprobarPelicula($pdo, $id){
 
 function generoSeleccionado($genero, $genero_id){
 
-  if ($genero['id'] == $genero_id){ ?>
-    <option value="<?= $genero['id'] ?>" selected>
-        <?= $genero['genero'] ?>
-    </option>
-  <?php
-  } else { ?>
-    <option value="<?= $genero['id'] ?>" >
-        <?= $genero['genero'] ?>
-    </option>
-  <?php
-  }
+  return $genero == $genero_id ? "selected" : "";
 }
