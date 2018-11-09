@@ -6,6 +6,15 @@ CREATE TABLE generos
   , genero VARCHAR(255) NOT NULL UNIQUE
 );
 
+DROP TABLE IF EXISTS usuarios CASCADE;
+
+CREATE TABLE usuarios
+(
+    id     BIGSERIAL    PRIMARY KEY
+  , login VARCHAR(50) NOT NULL UNIQUE
+  , password VARCHAR(60) NOT NULL
+);
+
 DROP TABLE IF EXISTS peliculas CASCADE;
 
 CREATE TABLE peliculas
