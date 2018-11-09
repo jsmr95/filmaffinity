@@ -11,6 +11,7 @@
     <body>
       <?php
       require '../comunes/auxiliar.php';
+      require './auxiliar.php';
 
          $valores = PAR;
 

@@ -10,6 +10,7 @@
     <body>
       <?php
       require '../comunes/auxiliar.php';
+      require './auxiliar.php';
 
       try{
          $error = [];

@@ -25,6 +25,7 @@
          <div class="row">
             <?php
             require '../comunes/auxiliar.php';
+            require './auxiliar.php';
             $pdo = conectar();
             //Pregunto si vengo del confirm_borrado, si existe un id por POST, es que quiero borrar una fila
             if (isset($_POST['id'])) {
