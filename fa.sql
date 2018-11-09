@@ -17,6 +17,13 @@ CREATE TABLE usuarios
   , password VARCHAR(60) NOT NULL
 );
 
+INSERT INTO usuarios(login,password)
+VALUES ('jose',crypt('jose',gen_salt('bf',10)))
+      ,('carmen',crypt('carmen',gen_salt('bf',10)))
+      ,('admin',crypt('admin',gen_salt('bf',10)))
+      ,('maria', crypt('maria',gen_salt('bf',10)));
+
+
 DROP TABLE IF EXISTS peliculas CASCADE;
 
 CREATE TABLE peliculas
