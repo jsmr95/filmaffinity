@@ -42,7 +42,7 @@ if (!isset($_COOKIE['acepta'])): ?>
 <div class="container">
     <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
     <p class="navbar-text navbar-right">
-        <a href="./comunes/crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+        <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
     </p>
 </div>
 </nav>
