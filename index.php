@@ -35,7 +35,19 @@ Podrás navegar por las diferentes opciones del navegador! Espero que encuentres
     </div>
   </div>
 </div>
-
+<?php
+//MUESTRO LA NAV SI NO EXISTE LA COOKIE
+if (!isset($_COOKIE['acepta'])): ?>
+<nav class="navbar navbar-default navbar-fixed-bottom navbar-inverse">
+<div class="container">
+    <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
+    <p class="navbar-text navbar-right">
+        <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+    </p>
+</div>
+</nav>
+<?php endif;
+ ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
