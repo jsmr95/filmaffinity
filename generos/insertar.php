@@ -11,13 +11,12 @@
       <?php
       require '../comunes/auxiliar.php';
 
-      extract(PAR1);
+      $valores = PAR1;
          try{
             $error = [];
             comprobarParametros(PAR1);
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
             $pdo = conectar();
-
             $flt['genero'] = comprobarGenero($pdo, $error);
             comprobarErrores($error);
             insertarGenero($pdo, $flt);
@@ -30,22 +29,7 @@
         ?>
         <br>
         <div class="container">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Insertar un nuevo Género...</h3>
-                </div>
-                <div class="panel-body">
-                    <form action="" method="post">
-                        <div class="form-group <?= hasError('genero', $error) ?>">
-                            <label for="titulo" class="control-label">Género</label>
-                            <input type="text" name="genero" class="form-control" id="genero" value="<?= h($genero) ?>" >
-                            <?php mensajeError('genero', $error) ?>
-                        </div>
-                        <input type="submit" value="Insertar" class="btn btn-success">
-                        <a href="index.php" class="btn btn-info">Volver</a>
-                    </form>
-                </div>
-            </div>
+          <?php mostrarFormularioGenero($valores ,$error, 'Insertar'); ?>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

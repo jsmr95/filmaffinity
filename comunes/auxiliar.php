@@ -162,6 +162,13 @@ function modificarPelicula($pdo, $fila, $id){
     $st->execute($fila + ['id' => $id]);
 }
 
+function modificarGenero($pdo, $fila, $id){
+    $st = $pdo->prepare('UPDATE generos
+                            SET genero = :genero
+                            WHERE id = :id');
+    $st->execute($fila + ['id' => $id]);
+}
+
 function mostrarFormulario($valores, $error, $pdo, $accion)
 {
     extract($valores);
@@ -227,6 +234,29 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
     <?php
 }
 
+function mostrarFormularioGenero($valores, $error, $accion){
+
+  extract($valores);
+  ?>
+  <div class="panel panel-primary">
+      <div class="panel-heading">
+          <h3 class="panel-title"><?= $accion ?> un Género...</h3>
+      </div>
+      <div class="panel-body">
+          <form action="" method="post">
+              <div class="form-group <?= hasError('genero', $error) ?>">
+                  <label for="titulo" class="control-label">Género</label>
+                  <input type="text" name="genero" class="form-control" id="genero" value="<?= h($genero) ?>" >
+                  <?php mensajeError('genero', $error) ?>
+              </div>
+              <input type="submit" value="<?= $accion ?>" class="btn btn-success">
+              <a href="index.php" class="btn btn-info">Volver</a>
+          </form>
+      </div>
+  </div>
+  <?php
+}
+
 function h($cadena){
     return htmlspecialchars($cadena, ENT_QUOTES);
 }
@@ -241,6 +271,14 @@ function comprobarId(){
 
 function comprobarPelicula($pdo, $id){
     $fila = buscarPelicula($pdo, $id);
+    if ($fila === false) {
+        throw new ParamException();
+    }
+    return $fila;
+}
+
+function comprobarGeneroExiste($pdo, $id){
+    $fila = buscarGenero($pdo, $id);
     if ($fila === false) {
         throw new ParamException();
     }
