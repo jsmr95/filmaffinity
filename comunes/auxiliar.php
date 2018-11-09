@@ -52,3 +52,16 @@ function comprobarId(){
     }
     return $id;
 }
+
+function navegador(){ ?>
+  <nav class="navbar navbar-default">
+<div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
+    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+  </div>
+</div><!-- /.container-fluid -->
+</nav>
+<?php
+}
