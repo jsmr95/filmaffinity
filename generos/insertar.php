@@ -11,28 +11,16 @@
       <?php
       require '../comunes/auxiliar.php';
 
-        const PAR = [
-            'titulo' => '',
-            'anyo' => '',
-            'sinopsis' => '',
-            'duracion' => '',
-            'genero_id' => '',
-        ];
-         extract(PAR);
-
+      extract(PAR1);
          try{
             $error = [];
-            comprobarParametros(PAR);
+            comprobarParametros(PAR1);
             extract(array_map('trim', $_POST), EXTR_IF_EXISTS);
             $pdo = conectar();
 
-            $flt['titulo'] = comprobarTitulo($error);
-            $flt['anyo'] = comprobarAnyo($error);
-            $flt['sinopsis'] = trim(filter_input(INPUT_POST,'sinopsis'));
-            $flt['duracion'] = comprobarDuracion($error);
-            $flt['genero_id'] = comprobarGeneroId($pdo, $error);
+            $flt['genero'] = comprobarGenero($pdo, $error);
             comprobarErrores($error);
-            insertarPelicula($pdo, $flt);
+            insertarGenero($pdo, $flt);
             header('Location: index.php');
         } catch (EmptyParamException|ValidationException $e){
             //No hago nada
@@ -44,33 +32,14 @@
         <div class="container">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Insertar una nueva película...</h3>
+                    <h3 class="panel-title">Insertar un nuevo Género...</h3>
                 </div>
                 <div class="panel-body">
                     <form action="" method="post">
-                        <div class="form-group <?= hasError('titulo', $error) ?>">
-                            <label for="titulo" class="control-label">Título</label>
-                            <input type="text" name="titulo" class="form-control" id="titulo" value="<?= $titulo ?>" >
-                            <?php mensajeError('titulo', $error) ?>
-                        </div>
-                        <div class="form-group <?= hasError('anyo', $error) ?>">
-                            <label for="anyo" class="control-label">Año</label>
-                            <input type="text" name="anyo" class="form-control" id="anyo" value="<?= $anyo ?>">
-                            <?php mensajeError('anyo', $error) ?>
-                        </div>
-                        <div class="form-group">
-                            <label for="sinopsis" class="control-label">Sinopsis</label>
-                            <textarea name="sinopsis" rows="8" cols="80" class="form-control" id="sinopsis"><?= $sinopsis ?></textarea>
-                        </div>
-                        <div class="form-group <?= hasError('duracion', $error) ?>">
-                            <label for="duracion" class="control-label">Duración</label>
-                            <input type="text" name="duracion" class="form-control" id="duracion" value="<?= $duracion ?>">
-                            <?php mensajeError('duracion', $error) ?>
-                        </div>
-                        <div class="form-group <?= hasError('genero_id', $error) ?>">
-                            <label for="genero_id" class="control-label">Género</label>
-                            <input type="text" name="genero_id" class="form-control" id="genero_id" value="<?= $genero_id ?>">
-                            <?php mensajeError('genero_id', $error) ?>
+                        <div class="form-group <?= hasError('genero', $error) ?>">
+                            <label for="titulo" class="control-label">Género</label>
+                            <input type="text" name="genero" class="form-control" id="genero" value="<?= h($genero) ?>" >
+                            <?php mensajeError('genero', $error) ?>
                         </div>
                         <input type="submit" value="Insertar" class="btn btn-success">
                         <a href="index.php" class="btn btn-info">Volver</a>
