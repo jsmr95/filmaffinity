@@ -80,6 +80,10 @@
                                  class="btn btn-xs btn-danger">
                                  Borrar
                                </a>
+                               <a href="modificar.php?id=<?= $fila['id'] ?>"
+                                      class="btn btn-xs btn-primary">
+                                      Modificar
+                                    </a>
                           </td>
                           <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
                       </tr>
