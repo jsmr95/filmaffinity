@@ -15,7 +15,7 @@ session_start();
   <body>
     <?php
     require './comunes/auxiliar.php';
-    navegador();
+    navegadorInicio();
     ?>
 <div class="container">
   <br>

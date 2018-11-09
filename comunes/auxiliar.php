@@ -53,13 +53,28 @@ function comprobarId(){
     return $id;
 }
 
+function navegadorInicio(){ ?>
+  <nav class="navbar navbar-default">
+<div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <a class="navbar-brand " href="">Menú</a>
+    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
+    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+  </div>
+</div><!-- /.container-fluid -->
+</nav>
+<?php
+}
+
 function navegador(){ ?>
   <nav class="navbar navbar-default">
 <div class="container-fluid">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
-    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
-    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+    <a class="navbar-brand " href="../index.php">Menú</a>
+    <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
+    <a class="navbar-brand " href="../generos/index.php">Géneros</a>
   </div>
 </div><!-- /.container-fluid -->
 </nav>
