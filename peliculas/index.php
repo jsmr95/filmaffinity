@@ -18,8 +18,9 @@ navegador();
     <body>
       <div class="container">
           <?php
-          compruebaSession('mensaje', 'success'); ?>
-
+          compruebaSession('mensaje', 'success');
+          compruebaSession('error', 'danger');
+          ?>
          <div class="row">
             <?php
 
@@ -29,18 +30,20 @@ navegador();
                 $id = $_POST['id'];
                 $pdo->beginTransaction();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
-                if (!buscarPelicula($pdo, $id)) { ?>
-                    <h3>Error: La pelicula no existe!</h3>
-                <?php
+                if (!buscarPelicula($pdo, $id)) {
+                  $_SESSION['error'] = 'La película no existe.';
+                  header('Location: index.php');
                 } else {
                     $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
                     $st->execute([':id' => $id]);
-                    $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
-                    header('Location: index.php')?>
-            <?php
+                    if (buscarPelicula($pdo, $id) === false) {
+                      $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
+                      header('Location: index.php');
+                    }
                 }
                 $pdo->commit();
             }
+
             $buscarTitulo = isset($_GET['buscarTitulo'])
                             ? trim($_GET['buscarTitulo'])
                             : '';
