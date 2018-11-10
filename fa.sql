@@ -6,6 +6,24 @@ CREATE TABLE generos
   , genero VARCHAR(255) NOT NULL UNIQUE
 );
 
+DROP TABLE IF EXISTS usuarios CASCADE;
+
+CREATE TABLE usuarios
+(
+    id     BIGSERIAL    PRIMARY KEY
+  , login VARCHAR(50) NOT NULL UNIQUE
+                      CONSTRAINT ck_login_sin_espacios
+                      CHECK (login NOT LIKE '% %')
+  , password VARCHAR(60) NOT NULL
+);
+
+INSERT INTO usuarios(login,password)
+VALUES ('jose',crypt('jose',gen_salt('bf',10)))
+      ,('carmen',crypt('carmen',gen_salt('bf',10)))
+      ,('admin',crypt('admin',gen_salt('bf',10)))
+      ,('maria', crypt('maria',gen_salt('bf',10)));
+
+
 DROP TABLE IF EXISTS peliculas CASCADE;
 
 CREATE TABLE peliculas

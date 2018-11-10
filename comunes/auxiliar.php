@@ -54,29 +54,60 @@ function comprobarId(){
 }
 
 function navegadorInicio(){ ?>
-  <nav class="navbar navbar-default">
-<div class="container-fluid">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <a class="navbar-brand " href="">Menú</a>
-    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
-    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
-  </div>
-</div><!-- /.container-fluid -->
-</nav>
+<nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand " href="index.php">Menú</a>
+                    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
+                    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+                </div>
+                <div class="navbar-text navbar-right">
+                    <a href="login.php" class="btn btn-success">Login</a>
+                </div>
+            </div>
+        </nav>
 <?php
 }
 
 function navegador(){ ?>
   <nav class="navbar navbar-default">
-<div class="container-fluid">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <a class="navbar-brand " href="../index.php">Menú</a>
-    <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
-    <a class="navbar-brand " href="../generos/index.php">Géneros</a>
-  </div>
-</div><!-- /.container-fluid -->
-</nav>
-<?php
+              <div class="container">
+                  <div class="navbar-header">
+                      <a class="navbar-brand " href="../index.php">Menú</a>
+                      <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
+                      <a class="navbar-brand " href="../generos/index.php">Géneros</a>
+                  </div>
+                  <div class="navbar-text navbar-right">
+                      <a href="../login.php" class="btn btn-success">Login</a>
+                  </div>
+              </div>
+          </nav>
+  <?php
+}
+
+function comprobarLogin(&$error){
+    $login = trim(filter_input(INPUT_POST, 'login'));
+    if ($login === '') {
+        $error['login'] = 'El nombre de usuario no puede estar vacío.';
+    }
+}
+
+function comprobarPassword(&$error){
+    $pass = trim(filter_input(INPUT_POST, 'password'));
+    if ($pass === '') {
+        $error['password'] = 'La contraseña no puede estar vacía.';
+    }
+}
+
+function comprobarUsuario($valores, $pdo, &$error){
+    extract($valores);
+    $st = $pdo->prepare('SELECT * FROM usuarios WHERE login = :login');
+    $st->execute(['login' => $login]);
+    $fila = $st->fetch();
+    if ($fila !== false) {
+        if (password_verify($password, $fila['password'])) {
+            return;
+        }
+    }
+    $error['sesion'] = 'El usuario o la contraseña son incorrectos.';
 }
