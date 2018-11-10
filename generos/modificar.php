@@ -23,6 +23,8 @@
          $flt['genero'] = comprobarGenero($pdo, $error);
          comprobarErrores($error);
          modificarGenero($pdo, $flt, $id);
+         //Creamos el mensaje de modificacion en $_SESSION
+         $_SESSION['mensaje'] = 'Película modificada correctamente.';
          header('Location: index.php');
      } catch (EmptyParamException|ValidationException $e){
          //No hago nada

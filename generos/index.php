@@ -18,7 +18,16 @@ navegador();
     <body>
       <div class="container">
          <div class="row">
-            <?php
+           <br>
+             <?php if (isset($_SESSION['mensaje'])): ?>
+                 <div class="row">
+                     <div class="alert alert-success" role="alert">
+                         <?= $_SESSION['mensaje'] ?>
+                     </div>
+                 </div>
+                 <?php unset($_SESSION['mensaje']); ?>
+             <?php endif;
+
             $pdo = conectar();
             //Pregunto si vengo del confirm_borrado, si existe un id por POST, es que quiero borrar una fila
             if (isset($_POST['id'])) {
