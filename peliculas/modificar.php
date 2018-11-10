@@ -33,6 +33,7 @@
      } catch (EmptyParamException|ValidationException $e){
          //No hago nada
      } catch (ParamException $e){
+       $_SESSION['error'] = 'La película no ha sido modificada.';
          header('Location: index.php');
      }
       ?>
