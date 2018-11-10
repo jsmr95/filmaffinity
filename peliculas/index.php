@@ -126,7 +126,8 @@ navegador();
       <div class="container">
           <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
           <p class="navbar-text navbar-right">
-              <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+            <?php $_SESSION['pagina'] = './peliculas/index.php'; ?>
+              <a href="../crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
           </p>
       </div>
       </nav>
