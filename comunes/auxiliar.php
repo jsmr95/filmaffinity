@@ -57,7 +57,7 @@ function navegadorInicio(){ ?>
 <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand " href="">Menú</a>
+                    <a class="navbar-brand " href="index.php">Menú</a>
                     <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
                     <a class="navbar-brand " href="./generos/index.php">Géneros</a>
                 </div>

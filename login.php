@@ -1,4 +1,6 @@
 <?php session_start();
+require './comunes/auxiliar.php';
+navegadorInicio();
 ?>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -12,7 +14,6 @@
     </head>
     <body>
         <?php
-        require 'comunes/auxiliar.php';
         const PAR_LOGIN = ['login' => '', 'password' => ''];
         $valores = PAR_LOGIN;
 
@@ -34,19 +35,29 @@
            header('Location: index.php');
        }
          ?>
+         <br><br>
       <div class="container">
           <div class="row">
-              <form class="" action="" method="post">
-                  <div class="form-group">
+            <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Iniar sesión</h3>
+                </div>
+                <div class="panel-body">
+                  <form class="" action="" method="post">
+                    <div class="form-group">
                       <label for="login">Usuario:</label>
                       <input type="text" class="form-control" name="login" value="">
-                  </div>
-                  <div class="form-group">
+                    </div>
+                    <div class="form-group">
                       <label for="password">Password:</label>
                       <input type="password" class="form-control" name="password" value="">
-                  </div>
-                  <button type="submit" class="btn btn-default">Iniciar sesión </button>
-              </form>
+                    </div>
+                    <button type="submit" class="btn btn-default">Iniciar sesión </button>
+                  </form>
+                </div>
+                </div>
+            </div>
           </div>
       </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
