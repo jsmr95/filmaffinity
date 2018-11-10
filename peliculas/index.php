@@ -17,15 +17,9 @@ navegador();
     </head>
     <body>
       <div class="container">
-          <br>
-            <?php if (isset($_SESSION['mensaje'])): ?>
-                <div class="row">
-                    <div class="alert alert-success" role="alert">
-                        <?= $_SESSION['mensaje'] ?>
-                    </div>
-                </div>
-                <?php unset($_SESSION['mensaje']); ?>
-            <?php endif ?>
+          <?php
+          compruebaSession('mensaje', 'success'); ?>
+          
          <div class="row">
             <?php
 

@@ -111,3 +111,15 @@ function comprobarUsuario($valores, $pdo, &$error){
     }
     $error['sesion'] = 'El usuario o la contraseña son incorrectos.';
 }
+
+function compruebaSession($var, $tipo){ ?>
+  <br>
+    <?php if (isset($_SESSION["$var"])): ?>
+        <div class="row">
+            <div class="alert alert-<?=$tipo?>" role="alert">
+                <?= $_SESSION["$var"] ?>
+            </div>
+        </div>
+        <?php unset($_SESSION["var"]); ?>
+    <?php endif;
+}
