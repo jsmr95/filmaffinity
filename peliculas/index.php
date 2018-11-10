@@ -19,7 +19,7 @@ navegador();
       <div class="container">
           <?php
           compruebaSession('mensaje', 'success'); ?>
-          
+
          <div class="row">
             <?php
 
@@ -34,8 +34,9 @@ navegador();
                 <?php
                 } else {
                     $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
-                    $st->execute([':id' => $id]); ?>
-                    <h3>Película borrada correctamente.</h3>
+                    $st->execute([':id' => $id]);
+                    $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
+                    header('Location: index.php')?>
             <?php
                 }
                 $pdo->commit();

@@ -120,6 +120,6 @@ function compruebaSession($var, $tipo){ ?>
                 <?= $_SESSION["$var"] ?>
             </div>
         </div>
-        <?php unset($_SESSION["var"]); ?>
+        <?php unset($_SESSION["$var"]); ?>
     <?php endif;
 }
