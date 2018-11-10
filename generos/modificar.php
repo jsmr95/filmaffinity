@@ -24,12 +24,13 @@
          comprobarErrores($error);
          modificarGenero($pdo, $flt, $id);
          //Creamos el mensaje de modificacion en $_SESSION
-         $_SESSION['mensaje'] = 'Película modificada correctamente.';
+         $_SESSION['mensaje'] = 'Género modificado correctamente.';
          header('Location: index.php');
      } catch (EmptyParamException|ValidationException $e){
          //No hago nada
      } catch (ParamException $e){
-         header('Location: index.php');
+       $_SESSION['error'] = 'El género no ha sido modificado.';
+       header('Location: index.php');
      }
       ?>
     <div class="container">
