@@ -33,8 +33,9 @@ navegador();
              $_SESSION['sesion'] = 'El usuario o la contraseña son incorrectos.';
              header('Location: login.php');
            }else {
-           $_SESSION['usuario'] = $usuario['login'];
-           header('Location: index.php');
+             $_SESSION['usuario'] = $usuario['login'];
+             $_SESSION['login'] = "Bienvenido a film-affinity $_SESSION[usuario] !!";
+             header('Location: index.php');
          }
        } catch (EmptyParamException|ValidationException $e){
            //No hago nada
