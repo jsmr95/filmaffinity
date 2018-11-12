@@ -136,6 +136,15 @@ function comprobarUsuario($valores, $pdo, &$error){
     return false;
 }
 
+function buscarUsuario($pdo, $id)
+{
+    $st = $pdo->prepare('SELECT * from usuarios WHERE id = :id');
+    //si no hay alguna fila que cumple con el id, te manda a la misma pagina
+    $st->execute([':id' => $id]);
+    //Te devuelve la pelicula, si no esta, devuelve FALSE
+    return $st->fetch();
+}
+
 function compruebaSession($var, $tipo){ ?>
   <br>
     <?php if (isset($_SESSION["$var"])): ?>
