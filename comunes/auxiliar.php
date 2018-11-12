@@ -64,9 +64,9 @@ function navegadorInicio(){ ?>
                 <div class="navbar-text navbar-right">
                     <?php if (isset($_SESSION['usuario'])):?>
                         <?= $_SESSION['usuario']; ?>
-                    <a href="login.php" class="btn btn-success">Logout</a>
+                    <a href="logout.php" class="btn btn-success">Logout</a>
                     <?php else: ?>
-                    <a href="logout.php" class="btn btn-success">Login</a>
+                    <a href="login.php" class="btn btn-success">Login</a>
                 <?php endif; ?>
                 </div>
             </div>
@@ -85,9 +85,9 @@ function navegador(){ ?>
                   <div class="navbar-text navbar-right">
                       <?php if (isset($_SESSION['usuario'])):?>
                           <?= $_SESSION['usuario']; ?>
-                      <a href="login.php" class="btn btn-success">Logout</a>
+                      <a href="../logout.php" class="btn btn-success">Logout</a>
                       <?php else: ?>
-                      <a href="logout.php" class="btn btn-success">Login</a>
+                      <a href="../login.php" class="btn btn-success">Login</a>
                   <?php endif; ?>
                   </div>
               </div>
@@ -132,7 +132,7 @@ function comprobarUsuario($valores, $pdo, &$error){
             return $fila;
         }
     }
-    $error['sesion'] = 'El usuario o la contraseña son incorrectos.';
+    $_SESSION['sesion'] = 'El usuario o la contraseña son incorrectos.';
     return false;
 }
 

@@ -13,8 +13,10 @@ navegador();
 
     </head>
     <body>
+        <br><br>
+      <div class="container">
         <?php
-
+        compruebaSession('sesion', 'danger');
         const PAR_LOGIN = ['login' => '', 'password' => ''];
         $valores = PAR_LOGIN;
 
@@ -36,8 +38,6 @@ navegador();
            header('Location: index.php');
        }
          ?>
-         <br><br>
-       <div class="container">
            <div class="row">
              <div class="col-md-4">
              <div class="panel panel-primary">
@@ -49,13 +49,13 @@ navegador();
                        <div class="form-group <?= hasError('login', $error) ?>">
                            <label for="login" class="control-label">Usuario</label>
                            <input id="login" type="text" name="login"
-                                  class="form-control">
+                                  class="form-control" value="<?=$valores['login']?>">
                            <?php mensajeError('login', $error) ?>
                        </div>
                        <div class="form-group <?= hasError('password', $error) ?>">
-                           <label for="password" class="control-label">Usuario</label>
-                           <input id="password" type="text" name="password"
-                                  class="form-control">
+                           <label for="password" class="control-label">Contraseña:</label>
+                           <input id="password" type="password" name="password"
+                                  class="form-control" value="<?=$valores['password']?>">
                            <?php mensajeError('password', $error) ?>
                        </div>
                     <button type="submit" class="btn btn-default">Iniciar sesión </button>
