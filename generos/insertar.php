@@ -22,10 +22,12 @@
             $flt['genero'] = comprobarGenero($pdo, $error);
             comprobarErrores($error);
             insertarGenero($pdo, $flt);
+            $_SESSION['mensaje'] = 'El género ha sido insertado correctamente.';
             header('Location: index.php');
         } catch (EmptyParamException|ValidationException $e){
             //No hago nada
         } catch (ParamException $e){
+          $_SESSION['error'] = 'El género no ha sido insertado.';
             header('Location: index.php');
         }
         ?>

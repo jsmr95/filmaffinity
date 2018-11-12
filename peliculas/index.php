@@ -17,15 +17,10 @@ navegador();
     </head>
     <body>
       <div class="container">
-          <br>
-            <?php if (isset($_SESSION['mensaje'])): ?>
-                <div class="row">
-                    <div class="alert alert-success" role="alert">
-                        <?= $_SESSION['mensaje'] ?>
-                    </div>
-                </div>
-                <?php unset($_SESSION['mensaje']); ?>
-            <?php endif ?>
+          <?php
+          compruebaSession('mensaje', 'success');
+          compruebaSession('error', 'danger');
+          ?>
          <div class="row">
             <?php
 
@@ -35,17 +30,20 @@ navegador();
                 $id = $_POST['id'];
                 $pdo->beginTransaction();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
-                if (!buscarPelicula($pdo, $id)) { ?>
-                    <h3>Error: La pelicula no existe!</h3>
-                <?php
+                if (!buscarPelicula($pdo, $id)) {
+                  $_SESSION['error'] = 'La película no existe.';
+                  header('Location: index.php');
                 } else {
                     $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
-                    $st->execute([':id' => $id]); ?>
-                    <h3>Película borrada correctamente.</h3>
-            <?php
+                    $st->execute([':id' => $id]);
+                    if (buscarPelicula($pdo, $id) === false) {
+                      $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
+                      header('Location: index.php');
+                    }
                 }
                 $pdo->commit();
             }
+
             $buscarTitulo = isset($_GET['buscarTitulo'])
                             ? trim($_GET['buscarTitulo'])
                             : '';
@@ -126,7 +124,8 @@ navegador();
       <div class="container">
           <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
           <p class="navbar-text navbar-right">
-              <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+            <?php $_SESSION['pagina'] = './peliculas/index.php'; ?>
+              <a href="../crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
           </p>
       </div>
       </nav>

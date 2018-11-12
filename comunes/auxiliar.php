@@ -54,34 +54,35 @@ function comprobarId(){
 }
 
 function navegadorInicio(){ ?>
-  <nav class="navbar navbar-default">
-<div class="container-fluid">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <a class="navbar-brand " href="">Menú</a>
-    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
-    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
-    <div class="navbar-text navbar-right">
-        <a class="btn btn-success" href="../login.php">Login</a>
-    </div>
-  </div>
-</div><!-- /.container-fluid -->
-</nav>
+<nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand " href="index.php">Menú</a>
+                    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
+                    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+                </div>
+                <div class="navbar-text navbar-right">
+                    <a href="login.php" class="btn btn-success">Login</a>
+                </div>
+            </div>
+        </nav>
 <?php
 }
 
 function navegador(){ ?>
   <nav class="navbar navbar-default">
-<div class="container-fluid">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <a class="navbar-brand " href="../index.php">Menú</a>
-    <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
-    <a class="navbar-brand " href="../generos/index.php">Géneros</a>
-  </div>
-</div><!-- /.container-fluid -->
-</nav>
-<?php
+              <div class="container">
+                  <div class="navbar-header">
+                      <a class="navbar-brand " href="../index.php">Menú</a>
+                      <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
+                      <a class="navbar-brand " href="../generos/index.php">Géneros</a>
+                  </div>
+                  <div class="navbar-text navbar-right">
+                      <a href="../login.php" class="btn btn-success">Login</a>
+                  </div>
+              </div>
+          </nav>
+  <?php
 }
 
 function comprobarLogin(&$error){
@@ -119,4 +120,16 @@ function comprobarUsuario($valores, $pdo, &$error){
     }
     $error['sesion'] = 'El usuario o la contraseña son incorrectos.';
     return false;
+}
+
+function compruebaSession($var, $tipo){ ?>
+  <br>
+    <?php if (isset($_SESSION["$var"])): ?>
+        <div class="row">
+            <div class="alert alert-<?=$tipo?>" role="alert">
+                <?= $_SESSION["$var"] ?>
+            </div>
+        </div>
+        <?php unset($_SESSION["$var"]); ?>
+    <?php endif;
 }

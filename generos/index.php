@@ -18,24 +18,29 @@ navegador();
     <body>
       <div class="container">
          <div class="row">
-            <?php
+           <?php
+           compruebaSession('mensaje', 'success');
+           compruebaSession('error', 'danger');
+
             $pdo = conectar();
             //Pregunto si vengo del confirm_borrado, si existe un id por POST, es que quiero borrar una fila
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 $pdo->beginTransaction();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
-                if (!buscarGenero($pdo, $id)) { ?>
-                    <h3>Error: El género no existe!</h3>
-                <?php
-              } elseif (compruebaGeneroEnUso($pdo, $id)) { ?>
-                <h3> Error: El género está usandose por una pelicula, no se puede borrar un Género en uso! </h3>
-                <?php
+                if (!buscarGenero($pdo, $id)) {
+                  $_SESSION['error'] = 'El género no existe.';
+                  header('Location: index.php');
+              } elseif (compruebaGeneroEnUso($pdo, $id)) {
+                $_SESSION['error'] = 'El género está usandose por una pelicula, no se puede borrar un género en uso!';
+                header('Location: index.php');
               } else {
                     $st = $pdo->prepare('DELETE FROM generos WHERE id = :id');
-                    $st->execute([':id' => $id]); ?>
-                    <h3>Género borrado correctamente.</h3>
-            <?php
+                    $st->execute([':id' => $id]);
+                    if (buscarGenero($pdo, $id) === false) {
+                      $_SESSION['mensaje'] = 'El género ha sido borrado correctamente.';
+                      header('Location: index.php');
+                    }
                 }
                 $pdo->commit();
             }
@@ -109,7 +114,8 @@ navegador();
       <div class="container">
           <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
           <p class="navbar-text navbar-right">
-              <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+            <?php $_SESSION['pagina'] = './generos/index.php'; ?>
+              <a href="../crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
           </p>
       </div>
       </nav>
