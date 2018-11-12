@@ -24,7 +24,7 @@
 
            $flt['login'] = comprobarLogin($error);
            $flt['password'] = comprobarPassword($error);
-           comprobarUsuario($flt,$pdo,$error);
+           $usuario = comprobarUsuario($flt,$pdo,$error);
            comprobarErrores($error);
            //Queda logearse
            header('Location: index.php');
