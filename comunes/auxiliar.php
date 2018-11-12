@@ -123,15 +123,17 @@ function comprobarPassword(&$error){
  */
 
 function comprobarUsuario($valores, $pdo, &$error){
-    extract($valores);
-    $st = $pdo->prepare('SELECT * FROM usuarios WHERE login = :login');
-    $st->execute(['login' => $login]);
-    $fila = $st->fetch();
-    if ($fila !== false) {
-        if (password_verify($password, $fila['password'])) {
-            return $fila;
-        }
-    }
+  extract($valores);
+   $st = $pdo->prepare('SELECT *
+                          FROM usuarios
+                         WHERE login = :login');
+   $st->execute(['login' => $login]);
+  $fila = $st->fetch();
+  if ($fila !== false) {
+      if (password_verify($password, $fila['password'])) {
+          return $fila;
+      }
+  }
     $_SESSION['sesion'] = 'El usuario o la contraseña son incorrectos.';
     return false;
 }
