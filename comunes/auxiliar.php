@@ -99,6 +99,8 @@ function comprobarLogin(&$error){
     $login = trim(filter_input(INPUT_POST, 'login'));
     if ($login === '') {
         $error['login'] = 'El nombre de usuario no puede estar vacío.';
+    }else {
+        return $login;
     }
 }
 
@@ -106,6 +108,8 @@ function comprobarPassword(&$error){
     $pass = trim(filter_input(INPUT_POST, 'password'));
     if ($pass === '') {
         $error['password'] = 'La contraseña no puede estar vacía.';
+    }else {
+        return $pass;
     }
 }
 

@@ -23,10 +23,10 @@ navegador();
            $pdo = conectar();
            comprobarParametros(PAR_LOGIN);
            $valores = array_map('trim', $_POST);
-
-           $flt['login'] = comprobarLogin($error);
-           $flt['password'] = comprobarPassword($error);
-           $usuario = comprobarUsuario($flt,$pdo,$error);
+           $valores['login'] = comprobarLogin($error);
+           $valores['password'] = comprobarPassword($error);
+           $usuario = comprobarUsuario($valores,$pdo,$error);
+           var_dump($valores);
            comprobarErrores($error);
            //Queda logearse
            $_SESSION['usuario'] = $usuario['login'];
