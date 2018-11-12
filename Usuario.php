@@ -2,6 +2,8 @@
 
 class Usuario
 {
+    const ADMIN = 'admin';
+
     public $id;
     public $login;
     public $password;
@@ -23,7 +25,12 @@ class Usuario
 
     public function desloguear()
     {
-        $nombre = $this->login;
+        $nombre = $this->login; //this hace referencia a la instancia del objeto actual
         echo "Ya está deslogueado $nombre.";
+    }
+
+    public static function nombreAdmin() //Lo hacemos static para poder llamarlo sin tener que instanciarlo, se puede llamar desde la misma clase.
+    {
+        return self::ADMIN; //self es la clase actual, para evitar el nombre de la clase
     }
 }
