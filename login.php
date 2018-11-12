@@ -34,19 +34,26 @@
            header('Location: index.php');
        }
          ?>
+         <br />
       <div class="container">
           <div class="row">
-              <form class="" action="" method="post">
-                  <div class="form-group">
-                      <label for="login">Usuario:</label>
-                      <input type="text" class="form-control" name="login" value="">
+              <div class="col-md-6">
+                  <div class="panel panel-default">
+                      <div class="panel-body">
+                          <form class="" action="" method="post">
+                              <div class="form-group">
+                                  <label for="login">Usuario:</label>
+                                  <input type="text" class="form-control" name="login" value="">
+                              </div>
+                              <div class="form-group">
+                                  <label for="password">Password:</label>
+                                  <input type="password" class="form-control" name="password" value="">
+                              </div>
+                              <button type="submit" class="btn btn-default">Iniciar sesión </button>
+                          </form>
+                      </div>
                   </div>
-                  <div class="form-group">
-                      <label for="password">Password:</label>
-                      <input type="password" class="form-control" name="password" value="">
-                  </div>
-                  <button type="submit" class="btn btn-default">Iniciar sesión </button>
-              </form>
+              </div>
           </div>
       </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
