@@ -19,6 +19,7 @@ session_start();
     ?>
 <div class="container">
   <br>
+  <?= compruebaSession('login','info'); ?>
   <div class="row">
     <div class="col-md-12">
       <div class="center-block">
