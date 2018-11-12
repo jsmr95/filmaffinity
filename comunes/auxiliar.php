@@ -62,7 +62,12 @@ function navegadorInicio(){ ?>
                     <a class="navbar-brand " href="./generos/index.php">Géneros</a>
                 </div>
                 <div class="navbar-text navbar-right">
+                    <?php if (isset($_SESSION['usuario'])):?>
+                        <?= $_SESSION['usuario']; ?>
+                    <a href="login.php" class="btn btn-success">Logout</a>
+                    <?php else: ?>
                     <a href="login.php" class="btn btn-success">Login</a>
+                <?php endif; ?>
                 </div>
             </div>
         </nav>
@@ -78,7 +83,12 @@ function navegador(){ ?>
                       <a class="navbar-brand " href="../generos/index.php">Géneros</a>
                   </div>
                   <div class="navbar-text navbar-right">
-                      <a href="../login.php" class="btn btn-success">Login</a>
+                      <?php if (isset($_SESSION['usuario'])):?>
+                          <?= $_SESSION['usuario']; ?>
+                      <a href="login.php" class="btn btn-success">Logout</a>
+                      <?php else: ?>
+                      <a href="login.php" class="btn btn-success">Login</a>
+                  <?php endif; ?>
                   </div>
               </div>
           </nav>
