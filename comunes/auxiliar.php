@@ -98,6 +98,15 @@ function comprobarPassword(&$error){
     }
 }
 
+/**
+ * Comprueba si existe el usuario indicado en el array
+ * $valores, con el nombre y la contrasxeña dados.
+ * @param   array $valores nombre y la contraseña
+ * @param   PDO $pdo     Objeto PDO usado para buscar al usuario
+ * @param  array $error   array de errores si los hay
+ * @return array|bool          La fila del usuario si existe; o false si no.
+ */
+
 function comprobarUsuario($valores, $pdo, &$error){
     extract($valores);
     $st = $pdo->prepare('SELECT * FROM usuarios WHERE login = :login');
@@ -105,8 +114,9 @@ function comprobarUsuario($valores, $pdo, &$error){
     $fila = $st->fetch();
     if ($fila !== false) {
         if (password_verify($password, $fila['password'])) {
-            return;
+            return $fila;
         }
     }
     $error['sesion'] = 'El usuario o la contraseña son incorrectos.';
+    return false;
 }
