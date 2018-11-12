@@ -29,9 +29,13 @@ navegador();
            $valores['password'] = comprobarPassword($error);
            $usuario = comprobarUsuario($valores,$pdo,$error);
            comprobarErrores($error);
-           //Queda logearse
+           if ($usuario === false) {
+             $_SESSION['sesion'] = 'El usuario o la contraseña son incorrectos.';
+             header('Location: login.php');
+           }else {
            $_SESSION['usuario'] = $usuario['login'];
            header('Location: index.php');
+         }
        } catch (EmptyParamException|ValidationException $e){
            //No hago nada
        } catch (ParamException $e){
