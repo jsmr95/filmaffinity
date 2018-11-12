@@ -26,7 +26,6 @@ navegador();
            $valores['login'] = comprobarLogin($error);
            $valores['password'] = comprobarPassword($error);
            $usuario = comprobarUsuario($valores,$pdo,$error);
-           var_dump($valores);
            comprobarErrores($error);
            //Queda logearse
            $_SESSION['usuario'] = $usuario['login'];
@@ -47,14 +46,18 @@ navegador();
                  </div>
                  <div class="panel-body">
                    <form class="" action="" method="post">
-                     <div class="form-group">
-                       <label for="login">Usuario:</label>
-                       <input type="text" class="form-control" name="login" value="">
-                     </div>
-                     <div class="form-group">
-                       <label for="password">Password:</label>
-                      <input type="password" class="form-control" name="password" value="">
-                    </div>
+                       <div class="form-group <?= hasError('login', $error) ?>">
+                           <label for="login" class="control-label">Usuario</label>
+                           <input id="login" type="text" name="login"
+                                  class="form-control">
+                           <?php mensajeError('login', $error) ?>
+                       </div>
+                       <div class="form-group <?= hasError('password', $error) ?>">
+                           <label for="password" class="control-label">Usuario</label>
+                           <input id="password" type="text" name="password"
+                                  class="form-control">
+                           <?php mensajeError('password', $error) ?>
+                       </div>
                     <button type="submit" class="btn btn-default">Iniciar sesión </button>
                     <button type="submit" class="btn btn-default">Crear cuenta </button>
                   </form>

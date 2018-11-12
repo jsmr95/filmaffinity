@@ -66,7 +66,7 @@ function navegadorInicio(){ ?>
                         <?= $_SESSION['usuario']; ?>
                     <a href="login.php" class="btn btn-success">Logout</a>
                     <?php else: ?>
-                    <a href="login.php" class="btn btn-success">Login</a>
+                    <a href="logout.php" class="btn btn-success">Login</a>
                 <?php endif; ?>
                 </div>
             </div>
@@ -87,7 +87,7 @@ function navegador(){ ?>
                           <?= $_SESSION['usuario']; ?>
                       <a href="login.php" class="btn btn-success">Logout</a>
                       <?php else: ?>
-                      <a href="login.php" class="btn btn-success">Login</a>
+                      <a href="logout.php" class="btn btn-success">Login</a>
                   <?php endif; ?>
                   </div>
               </div>
