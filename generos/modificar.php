@@ -25,12 +25,12 @@
          modificarGenero($pdo, $flt, $id);
          //Creamos el mensaje de modificacion en $_SESSION
          $_SESSION['mensaje'] = 'Género modificado correctamente.';
-         header('Location: index.php');
+         irAlIndice();
      } catch (EmptyParamException|ValidationException $e){
          //No hago nada
      } catch (ParamException $e){
        $_SESSION['error'] = 'El género no ha sido modificado.';
-       header('Location: index.php');
+       irAlIndice();
      }
       ?>
     <div class="container">

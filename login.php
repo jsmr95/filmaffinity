@@ -35,12 +35,12 @@ navegador();
            }else {
              $_SESSION['usuario'] = $usuario['login'];
              $_SESSION['login'] = "Bienvenido a film-affinity $_SESSION[usuario] !!";
-             header('Location: index.php');
+             irAlIndice();
          }
        } catch (EmptyParamException|ValidationException $e){
            //No hago nada
        } catch (ParamException $e){
-           header('Location: index.php');
+           irAlIndice();
        }
          ?>
            <div class="row">

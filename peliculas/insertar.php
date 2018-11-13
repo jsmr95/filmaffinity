@@ -29,12 +29,12 @@
             comprobarErrores($error);
             insertarPelicula($pdo, $flt);
             $_SESSION['mensaje'] = 'La película ha sido insertada correctamente.';
-            header('Location: index.php');
+            irAlIndice();
         } catch (EmptyParamException|ValidationException $e){
             //No hago nada
         } catch (ParamException $e){
             $_SESSION['error'] = 'La película no ha sido insertada.';
-            header('Location: index.php');
+            irAlIndice();
         }
         ?>
         <br>
