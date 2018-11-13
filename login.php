@@ -19,7 +19,14 @@ navegador();
         compruebaSession('sesion', 'danger');
         const PAR_LOGIN = ['login' => '', 'password' => ''];
         $valores = PAR_LOGIN;
-
+        //Compruebo si ha fallado en el login o contraseña para msotrarlos
+        if (isset($_SESSION['userIncorrecto']) || isset($_SESSION['passIncorrecta'])) {
+          $valores['login'] = $_SESSION['userIncorrecto'];
+          $valores['password'] = $_SESSION['passIncorrecta'];
+          $_SESSION['userIncorrecto'] = '';
+          $_SESSION['passIncorrecta'] = '';
+        }
+        
         try{
            $error = [];
            $pdo = conectar();
@@ -31,6 +38,9 @@ navegador();
            comprobarErrores($error);
            if ($usuario === false) {
              $_SESSION['sesion'] = 'El usuario o la contraseña son incorrectos.';
+             //Guardo las incorrectas para que se mantenga
+             $_SESSION['userIncorrecto'] = $valores['login'];
+             $_SESSION['passIncorrecta'] = $valores['password'];
              header('Location: login.php');
            }else {
              $_SESSION['usuario'] = $usuario['login'];
