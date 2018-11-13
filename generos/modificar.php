@@ -13,6 +13,12 @@
       require '../comunes/auxiliar.php';
       require './auxiliar.php';
 
+      //Debe estar logueado para modificar una pelicula
+      if (!isset($_SESSION['usuario'])) {
+            $_SESSION['mensaje'] = 'Debe iniciar sesión para modificar películas.';
+            irAlIndice();
+        }
+
       try{
          $error = [];
          $id = comprobarId();
