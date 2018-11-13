@@ -165,3 +165,19 @@ function navegador(){ ?>
           </nav>
   <?php
 }
+
+function piePagina(){?>
+  <nav class="navbar navbar-default navbar-fixed-bottom">
+              <div class="container">
+                  <div class="navbar-header">
+                    <br> <br>
+                    <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true">Copyright 2018 - Jose María Gallego Martel</span>
+                  </div>
+                  <div class="navbar-text navbar-right">
+                      <h4>FilmAffinity <span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span> </h4>
+                  </div>
+              </div>
+          </nav>
+  <?php
+
+}
