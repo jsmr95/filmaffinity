@@ -102,7 +102,6 @@ function comprobarUsuario($valores, $pdo, &$error){
     return false;
 }
 
-
 function hasError($key, $error){
 
     return array_key_exists($key, $error) ? 'has-error' : '';
@@ -131,7 +130,9 @@ function navegadorInicio(){ ?>
                 </div>
                 <div class="navbar-text navbar-right">
                     <?php if (isset($_SESSION['usuario'])):?>
-                        <?= $_SESSION['usuario']; ?>
+                        <?= $_SESSION['usuario'];
+                        $_SESSION['url'] = $_SERVER["REQUEST_URI"];
+                        ?>
                     <a href="logout.php" class="btn btn-success">Logout</a>
                     <?php else: ?>
                     <a href="login.php" class="btn btn-success">Login</a>
@@ -152,7 +153,9 @@ function navegador(){ ?>
                   </div>
                   <div class="navbar-text navbar-right">
                       <?php if (isset($_SESSION['usuario'])):?>
-                          <?= $_SESSION['usuario']; ?>
+                          <?= $_SESSION['usuario'];
+                          $_SESSION['url'] = $_SERVER["REQUEST_URI"];
+                          ?>
                       <a href="../logout.php" class="btn btn-success">Logout</a>
                       <?php else: ?>
                       <a href="../login.php" class="btn btn-success">Login</a>
