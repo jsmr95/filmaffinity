@@ -8,7 +8,7 @@ navegador();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-       <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>FilmAffinity</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <style media="screen">
@@ -58,23 +58,64 @@ navegador();
             $st->execute([':titulo' => "$buscarTitulo"]);
             ?>
           </div>
-        <div class="row" id="busqueda">
-          <div class="col-md-12">
-            <!-- Creamos un buscador de peliculas -->
-              <fieldset>
-                <legend>Buscar</legend>
-                <form action="" method="get" class="form-inline">
-                  <div class="form-group">
-                    <label for="buscarTitulo">Buscar por título:</label>
-                    <input id="buscarTitulo" type="text" name="buscarTitulo"
-                    value="<?= $buscarTitulo ?>" class="form-control">
+
+          <div class="row form-inline" id="busqueda">
+            <fieldset>
+              <legend>Buscar</legend>
+              <!-- Creamos un buscador de peliculas por titulo-->
+              <form action="" method="get" class="form-inline">
+                <div class="col-md-3">
+                  <div class="panel panel-default" id="fondoTabla">
+                    <div class="panel-body">
+                      <div class="form-group">
+                        <label for="buscarTitulo">Buscar por título:</label>
+                        <input id="buscarTitulo" type="text" name="buscarTitulo"
+                        value="<?= $buscarTitulo ?>" class="form-control">
+                      </div>
+                    </div>
                   </div>
-                  <input type="submit" value="Buscar" class="btn btn-primary">
-                </form>
-              </fieldset>
+                </div>
+                <div class="col-md-3">
+              <!-- Creamos un buscador de peliculas por año-->
+              <div class="panel panel-default" id="fondoTabla">
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label for="buscarAnyo">Buscar por año:</label>
+                    <input id="buscarAnyo" type="text" name="buscarAnyo"
+                    value="<?= $buscarAnyo ?>" class="form-control">
+                  </div>
+                </div>
+              </div>
             </div>
+              <div class="col-md-3">
+                <!-- Creamos un buscador de peliculas por duración-->
+                <div class="panel panel-default" id="fondoTabla">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label for="buscarDuracion">Buscar por duración:</label>
+                      <input id="buscarDuracion" type="text" name="buscarDuracion"
+                      value="<?= $buscarDuracion ?>" class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <!-- Creamos un buscador de peliculas por género-->
+                <div class="panel panel-default" id="fondoTabla">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label for="buscarGenero">Buscar por género:</label>
+                      <input id="buscarGenero" type="text" name="buscarGenero"
+                      value="<?= $buscarGenero ?>" class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <input type="submit" value="Buscar" class="btn btn-primary">
+              </form>
+            </fieldset>
           </div>
-          <hr>
+      <hr>
           <div class="row">
             <div class="col-md-12">
               <table class="table table-bordered table-hover table-striped">
