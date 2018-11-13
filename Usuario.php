@@ -35,4 +35,14 @@ class Usuario
     {
         return self::ADMIN; //self es la clase actual, para evitar el nombre de la clase
     }
+
+    public static function quienSoy()
+    {
+        return __CLASS__;
+    }
+
+    public static function prueba()
+    {
+        return static::quienSoy();
+    }
 }
