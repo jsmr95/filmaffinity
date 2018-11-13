@@ -14,6 +14,35 @@ function conectar()
     return new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
 }
 
+function compruebaSession($var, $tipo){ ?>
+  <br>
+    <?php if (isset($_SESSION["$var"])): ?>
+        <div class="row">
+            <div class="alert alert-<?=$tipo?>" role="alert">
+                <?= $_SESSION["$var"] ?>
+            </div>
+        </div>
+        <?php unset($_SESSION["$var"]); ?>
+    <?php endif;
+}
+
+function buscarUsuario($pdo, $id)
+{
+    $st = $pdo->prepare('SELECT * from usuarios WHERE id = :id');
+    //si no hay alguna fila que cumple con el id, te manda a la misma pagina
+    $st->execute([':id' => $id]);
+    //Te devuelve la pelicula, si no esta, devuelve FALSE
+    return $st->fetch();
+}
+
+function comprobarId(){
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if ($id === null || $id === false) {
+        throw new ParamException();
+    }
+    return $id;
+}
+
 function comprobarErrores(&$error){
     if (!empty($error)) {
         throw new ValidationException();
@@ -29,70 +58,6 @@ function comprobarParametros($par)
         !empty(array_diff_key($_POST,$par))) {
             throw new ParamException();
         }
-}
-
-function hasError($key, $error){
-
-    return array_key_exists($key, $error) ? 'has-error' : '';
-}
-
-function mensajeError($key, $error){
-    if (isset($error[$key])){ ?>
-        <small class="help-block"> <?= $error[$key] ?></small> <?php }
-}
-
-function h($cadena){
-    return htmlspecialchars($cadena, ENT_QUOTES);
-}
-
-function comprobarId(){
-    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-    if ($id === null || $id === false) {
-        throw new ParamException();
-    }
-    return $id;
-}
-
-function navegadorInicio(){ ?>
-<nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand " href="index.php">Menú</a>
-                    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
-                    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
-                </div>
-                <div class="navbar-text navbar-right">
-                    <?php if (isset($_SESSION['usuario'])):?>
-                        <?= $_SESSION['usuario']; ?>
-                    <a href="logout.php" class="btn btn-success">Logout</a>
-                    <?php else: ?>
-                    <a href="login.php" class="btn btn-success">Login</a>
-                <?php endif; ?>
-                </div>
-            </div>
-        </nav>
-<?php
-}
-
-function navegador(){ ?>
-  <nav class="navbar navbar-default">
-              <div class="container">
-                  <div class="navbar-header">
-                      <a class="navbar-brand " href="../index.php">Menú</a>
-                      <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
-                      <a class="navbar-brand " href="../generos/index.php">Géneros</a>
-                  </div>
-                  <div class="navbar-text navbar-right">
-                      <?php if (isset($_SESSION['usuario'])):?>
-                          <?= $_SESSION['usuario']; ?>
-                      <a href="../logout.php" class="btn btn-success">Logout</a>
-                      <?php else: ?>
-                      <a href="../login.php" class="btn btn-success">Login</a>
-                  <?php endif; ?>
-                  </div>
-              </div>
-          </nav>
-  <?php
 }
 
 function comprobarLogin(&$error){
@@ -137,23 +102,63 @@ function comprobarUsuario($valores, $pdo, &$error){
     return false;
 }
 
-function buscarUsuario($pdo, $id)
-{
-    $st = $pdo->prepare('SELECT * from usuarios WHERE id = :id');
-    //si no hay alguna fila que cumple con el id, te manda a la misma pagina
-    $st->execute([':id' => $id]);
-    //Te devuelve la pelicula, si no esta, devuelve FALSE
-    return $st->fetch();
+
+function hasError($key, $error){
+
+    return array_key_exists($key, $error) ? 'has-error' : '';
 }
 
-function compruebaSession($var, $tipo){ ?>
-  <br>
-    <?php if (isset($_SESSION["$var"])): ?>
-        <div class="row">
-            <div class="alert alert-<?=$tipo?>" role="alert">
-                <?= $_SESSION["$var"] ?>
+function mensajeError($key, $error){
+    if (isset($error[$key])){ ?>
+        <small class="help-block"> <?= $error[$key] ?></small> <?php }
+}
+
+function h($cadena){
+    return htmlspecialchars($cadena, ENT_QUOTES);
+}
+
+function irAlIndice(){
+  header("Location: index.php");
+}
+
+function navegadorInicio(){ ?>
+<nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand " href="index.php">Menú</a>
+                    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
+                    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+                </div>
+                <div class="navbar-text navbar-right">
+                    <?php if (isset($_SESSION['usuario'])):?>
+                        <?= $_SESSION['usuario']; ?>
+                    <a href="logout.php" class="btn btn-success">Logout</a>
+                    <?php else: ?>
+                    <a href="login.php" class="btn btn-success">Login</a>
+                <?php endif; ?>
+                </div>
             </div>
-        </div>
-        <?php unset($_SESSION["$var"]); ?>
-    <?php endif;
+        </nav>
+<?php
+}
+
+function navegador(){ ?>
+  <nav class="navbar navbar-default">
+              <div class="container">
+                  <div class="navbar-header">
+                      <a class="navbar-brand " href="../index.php">Menú</a>
+                      <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
+                      <a class="navbar-brand " href="../generos/index.php">Géneros</a>
+                  </div>
+                  <div class="navbar-text navbar-right">
+                      <?php if (isset($_SESSION['usuario'])):?>
+                          <?= $_SESSION['usuario']; ?>
+                      <a href="../logout.php" class="btn btn-success">Logout</a>
+                      <?php else: ?>
+                      <a href="../login.php" class="btn btn-success">Login</a>
+                  <?php endif; ?>
+                  </div>
+              </div>
+          </nav>
+  <?php
 }

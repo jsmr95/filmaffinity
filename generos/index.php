@@ -30,16 +30,16 @@ navegador();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
                 if (!buscarGenero($pdo, $id)) {
                   $_SESSION['error'] = 'El género no existe.';
-                  header('Location: index.php');
+                  irAlIndice();
               } elseif (compruebaGeneroEnUso($pdo, $id)) {
                 $_SESSION['error'] = 'El género está usandose por una pelicula, no se puede borrar un género en uso!';
-                header('Location: index.php');
+                irAlIndice();
               } else {
                     $st = $pdo->prepare('DELETE FROM generos WHERE id = :id');
                     $st->execute([':id' => $id]);
                     if (buscarGenero($pdo, $id) === false) {
                       $_SESSION['mensaje'] = 'El género ha sido borrado correctamente.';
-                      header('Location: index.php');
+                      irAlIndice();
                     }
                 }
                 $pdo->commit();

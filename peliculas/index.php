@@ -32,13 +32,13 @@ navegador();
                 $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
                 if (!buscarPelicula($pdo, $id)) {
                   $_SESSION['error'] = 'La película no existe.';
-                  header('Location: index.php');
+                  irAlIndice();
                 } else {
                     $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
                     $st->execute([':id' => $id]);
                     if (buscarPelicula($pdo, $id) === false) {
                       $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
-                      header('Location: index.php');
+                      irAlIndice();
                     }
                 }
                 $pdo->commit();

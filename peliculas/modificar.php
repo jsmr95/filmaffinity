@@ -29,12 +29,12 @@
          //Creamos el mensaje de modificacion en $_SESSION
          $_SESSION['mensaje'] = 'Película modificada correctamente.';
          modificarPelicula($pdo, $flt, $id);
-         header('Location: index.php');
+         irAlIndice();
      } catch (EmptyParamException|ValidationException $e){
          //No hago nada
      } catch (ParamException $e){
        $_SESSION['error'] = 'La película no ha sido modificada.';
-         header('Location: index.php');
+         irAlIndice();
      }
       ?>
     <div class="container">
