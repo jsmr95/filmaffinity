@@ -1,7 +1,19 @@
 <?php
 
+//RASGO
+trait Saludador
+{
+    public $mensaje = "Hola\n";
+    public function saluda()
+    {
+        echo $this->mensaje;
+    }
+}
+
+
 class Usuario
 {
+    use Saludador;
     const ADMIN = 'admin';
 
     public $id;
@@ -45,4 +57,5 @@ class Usuario
     {
         return static::quienSoy();
     }
+
 }

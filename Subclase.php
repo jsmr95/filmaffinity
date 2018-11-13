@@ -2,7 +2,13 @@
 
 require 'Usuario.php';
 
-class Subclase extends Usuario
+class Subclase
 {
+    use Saludador;
     
+    public static function quienSoy()
+    {
+        return 'Subclase';
+    }
+
 }
