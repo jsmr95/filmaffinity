@@ -1,5 +1,7 @@
 <?php
 session_start();
+$url = $_SESSION['url'];
+var_dump($_SESSION['url']);
 $_SESSION = []; //Liberamos el array
 //Eliminamos la cookie
 $params = session_get_cookie_params();
@@ -13,4 +15,4 @@ setcookie(
     $params['httponly']
 );
 session_destroy();
-header('Location: index.php');
+header("Location: $url");
