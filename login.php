@@ -74,7 +74,7 @@ navegador();
                            <?php mensajeError('password', $error) ?>
                        </div>
                     <button type="submit" class="btn btn-default">Iniciar sesión </button>
-                    <button type="submit" class="btn btn-default">Crear cuenta </button>
+                    <a href="crear_cuenta.php" class="btn btn-default">Crear cuenta </a>
                   </form>
                 </div>
                 </div>
