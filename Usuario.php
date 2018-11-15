@@ -1,19 +1,15 @@
 <?php
 
-//RASGO
-trait Saludador
-{
-    public $mensaje = "Hola\n";
-    public function saluda()
-    {
-        echo $this->mensaje;
-    }
-}
+namespace espacio1;
 
+use espacio5\Saludador as Sa; //aunque no ponga \ al principio, este use, es ruta absoluta
+
+require './Saludador.php';
 
 class Usuario
 {
-    use Saludador;
+    use Sa; //Ya sabe el nombre de espacio, por el use de arriba
+
     const ADMIN = 'admin';
 
     public $id;

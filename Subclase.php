@@ -2,13 +2,18 @@
 
 require 'Usuario.php';
 
-class Subclase
+class Subclase extends Usuario
 {
-    use Saludador;
-    
+    public $nombre;
+    public function __construct($id,$nombre)
+    {
+        parent::__construct($id);
+        $this->nombre = $nombre;
+    }
+
     public static function quienSoy()
     {
-        return 'Subclase';
+        return 'Subclase de ' . parent::quienSoy();
     }
 
 }
