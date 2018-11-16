@@ -60,11 +60,25 @@ class Usuario
     {
         return static::quienSoy();
     }
+
+    public function sumaId($x)
+    {
+        return $x + $this->id;
+    }
 }
 
 function multiplicar($v)
 {
-    return function($x) use ($v){ //Clausura, recuerda el valor de la variable aunque se haya salido del ambito
+    return function($x) use ($v){ //Clausura, recuerda el valor de la variable $v aunque se haya salido del ambito, vale lo que valía en el momento de la ejecución de la funcion
         return $x * $v;
     };
 }
+
+/* TEORIA DE CALLABLES, PASAR AL ARCHIVO DE TEORIA
+    Formas de Callables ->
+        -'funcion'
+        - function($x){return $x;}
+        -['nombre clase con su espacio','nombre de metodo estatico']
+        -[$ObjetoOInstancia, 'nombre del metodo publico']
+        
+        */
