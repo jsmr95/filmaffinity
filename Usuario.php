@@ -2,13 +2,15 @@
 
 namespace espacio1;
 
-use espacio5\Saludador as Sa; //aunque no ponga \ al principio, este use, es ruta absoluta
-
 require './Saludador.php';
+
+function strlen($c)
+{
+    return \strlen($c) - 1;
+}
 
 class Usuario
 {
-    use Sa; //Ya sabe el nombre de espacio, por el use de arriba
 
     const ADMIN = 'admin';
 
@@ -16,6 +18,11 @@ class Usuario
     public $login;
     public $password;
     public static $cantidad = 0;
+
+    public static function longitud($c)
+    {
+        return strlen($c);
+    }
 
     public function __construct($id)
     {
@@ -53,5 +60,11 @@ class Usuario
     {
         return static::quienSoy();
     }
+}
 
+function multiplicar($v)
+{
+    return function($x) use ($v){ //Clausura, recuerda el valor de la variable aunque se haya salido del ambito
+        return $x * $v;
+    };
 }
