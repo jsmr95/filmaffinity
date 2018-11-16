@@ -74,11 +74,21 @@ function multiplicar($v)
     };
 }
 
+//Creamos nuestro array_map
+function mapmap(callable $c,array $a): array //Declaramos los tipos, pero no es necesario
+{
+    $res = [];
+    foreach ($a as $e) {
+        $res[] = call_user_func($c, $e);
+    }
+    return $res;
+}
+
 /* TEORIA DE CALLABLES, PASAR AL ARCHIVO DE TEORIA
     Formas de Callables ->
         -'funcion'
         - function($x){return $x;}
         -['nombre clase con su espacio','nombre de metodo estatico']
         -[$ObjetoOInstancia, 'nombre del metodo publico']
-        
+
         */
