@@ -1,5 +1,7 @@
 <?php
 
+const PAR_LOGIN = ['login' => '', 'password' => ''];
+
 class ValidationException extends Exception
 {}
 
@@ -78,6 +80,15 @@ function comprobarPassword(&$error){
     }
 }
 
+function comprobarPasswordNueva($password){
+    $pass = trim(filter_input(INPUT_POST, 'password'));
+    if ($pass !== $password) {
+        return false;
+    }else {
+        return true;
+    }
+}
+
 /**
  * Comprueba si existe el usuario indicado en el array
  * $valores, con el nombre y la contrasxeña dados.
@@ -87,7 +98,7 @@ function comprobarPassword(&$error){
  * @return array|bool          La fila del usuario si existe; o false si no.
  */
 
-function comprobarUsuario($valores, $pdo, &$error){
+function comprobarUsuario($valores, $pdo){
   extract($valores);
    $st = $pdo->prepare('SELECT *
                           FROM usuarios
@@ -99,8 +110,23 @@ function comprobarUsuario($valores, $pdo, &$error){
           return $fila;
       }
   }
-    return false;
+  return false;
 }
+
+function comprobarUsuarioNuevo($valores, $pdo, &$error){
+  extract($valores);
+  $st = $pdo->prepare('SELECT *
+                        FROM usuarios
+                       WHERE login = :login');
+  $st->execute(['login' => $login]);
+  $fila = $st->fetch();
+  if ($fila !== false) {
+    return $fila;
+  } else {
+    return false;
+  }
+}
+
 
 function hasError($key, $error){
 

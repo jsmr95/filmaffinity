@@ -27,21 +27,21 @@ navegador();
             $pdo = conectar();
             //Pregunto si vengo del confirm_borrado, si existe un id por POST, es que quiero borrar una fila
             if (isset($_POST['id'])) {
-                $id = $_POST['id'];
-                $pdo->beginTransaction();
-                $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
-                if (!buscarPelicula($pdo, $id)) {
-                  $_SESSION['error'] = 'La película no existe.';
+              $id = $_POST['id'];
+              $pdo->beginTransaction();
+              $pdo->exec('LOCK TABLE peliculas IN SHARE MODE');
+              if (!buscarPelicula($pdo, $id)) {
+                $_SESSION['error'] = 'La película no existe.';
+                irAlIndice();
+              } else {
+                $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
+                $st->execute([':id' => $id]);
+                if (buscarPelicula($pdo, $id) === false) {
+                  $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
                   irAlIndice();
-                } else {
-                    $st = $pdo->prepare('DELETE FROM peliculas WHERE id = :id');
-                    $st->execute([':id' => $id]);
-                    if (buscarPelicula($pdo, $id) === false) {
-                      $_SESSION['mensaje'] = 'La película ha sido borrada correctamente.';
-                      irAlIndice();
-                    }
                 }
-                $pdo->commit();
+              }
+              $pdo->commit();
             }
 
             $buscarTitulo = isset($_GET['buscarTitulo'])
