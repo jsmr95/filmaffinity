@@ -1,6 +1,7 @@
 <?php
 
 const PAR_LOGIN = ['login' => '', 'password' => ''];
+const PAR_CREAR_CUENTA = ['login' => '', 'password' => '', 'passwordRepeat' => ''];
 
 class ValidationException extends Exception
 {}
@@ -37,6 +38,12 @@ function buscarUsuario($pdo, $id)
     return $st->fetch();
 }
 
+function insertarUsuario($pdo, $fila){
+  $st = $pdo->prepare('INSERT INTO usuarios (login, password)
+  VALUES (:login,:password)');
+  $st->execute([':login'=>$fila['login'],':password'=>crypt($fila['password'])]);
+}
+
 function comprobarId(){
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     if ($id === null || $id === false) {
@@ -63,30 +70,33 @@ function comprobarParametros($par)
 }
 
 function comprobarLogin(&$error){
-    $login = trim(filter_input(INPUT_POST, 'login'));
-    if ($login === '') {
-        $error['login'] = 'El nombre de usuario no puede estar vacío.';
-    }else {
-        return $login;
-    }
+  $login = trim(filter_input(INPUT_POST, 'login'));
+  if ($login === '') {
+      $error['login'] = 'El nombre de usuario no puede estar vacío.';
+  }else {
+      return $login;
+  }
 }
 
 function comprobarPassword(&$error){
-    $pass = trim(filter_input(INPUT_POST, 'password'));
-    if ($pass === '') {
-        $error['password'] = 'La contraseña no puede estar vacía.';
-    }else {
-        return $pass;
-    }
+  $pass = trim(filter_input(INPUT_POST, 'password'));
+  if ($pass === '') {
+      $error['password'] = 'La contraseña no puede estar vacía.';
+  }else {
+      return $pass;
+  }
 }
 
-function comprobarPasswordNueva($password){
-    $pass = trim(filter_input(INPUT_POST, 'password'));
-    if ($pass !== $password) {
-        return false;
-    }else {
-        return true;
-    }
+function comprobarPasswordNueva($password, &$error){
+  $pass = trim(filter_input(INPUT_POST, 'passwordRepeat'));
+  if ($pass === '') {
+    $error['passwordRepeat'] = 'Debes repetir la contraseña, no puede estar vacío.';
+    return false;
+  }elseif ($pass !== $password) {
+    return false;
+  }else {
+    return $pass;
+  }
 }
 
 /**

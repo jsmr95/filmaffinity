@@ -17,6 +17,7 @@ navegador();
     <div class="container">
       <?php
       compruebaSession('sesion', 'danger');
+      compruebaSession('login', 'info');
 
       $valores = PAR_LOGIN;
       //Compruebo si ha fallado en el login o contraseña para msotrarlos
