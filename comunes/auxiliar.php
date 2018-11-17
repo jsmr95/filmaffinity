@@ -1,5 +1,8 @@
 <?php
 
+const PAR_LOGIN = ['login' => '', 'password' => ''];
+const PAR_CREAR_CUENTA = ['login' => '', 'password' => '', 'passwordRepeat' => ''];
+
 class ValidationException extends Exception
 {}
 
@@ -35,6 +38,12 @@ function buscarUsuario($pdo, $id)
     return $st->fetch();
 }
 
+function insertarUsuario($pdo, $fila){
+  $st = $pdo->prepare('INSERT INTO usuarios (login, password)
+  VALUES (:login,:password)');
+  $st->execute([':login'=>$fila['login'],':password'=>crypt($fila['password'])]);
+}
+
 function comprobarId(){
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     if ($id === null || $id === false) {
@@ -61,21 +70,33 @@ function comprobarParametros($par)
 }
 
 function comprobarLogin(&$error){
-    $login = trim(filter_input(INPUT_POST, 'login'));
-    if ($login === '') {
-        $error['login'] = 'El nombre de usuario no puede estar vacío.';
-    }else {
-        return $login;
-    }
+  $login = trim(filter_input(INPUT_POST, 'login'));
+  if ($login === '') {
+      $error['login'] = 'El nombre de usuario no puede estar vacío.';
+  }else {
+      return $login;
+  }
 }
 
 function comprobarPassword(&$error){
-    $pass = trim(filter_input(INPUT_POST, 'password'));
-    if ($pass === '') {
-        $error['password'] = 'La contraseña no puede estar vacía.';
-    }else {
-        return $pass;
-    }
+  $pass = trim(filter_input(INPUT_POST, 'password'));
+  if ($pass === '') {
+      $error['password'] = 'La contraseña no puede estar vacía.';
+  }else {
+      return $pass;
+  }
+}
+
+function comprobarPasswordNueva($password, &$error){
+  $pass = trim(filter_input(INPUT_POST, 'passwordRepeat'));
+  if ($pass === '') {
+    $error['passwordRepeat'] = 'Debes repetir la contraseña, no puede estar vacío.';
+    return false;
+  }elseif ($pass !== $password) {
+    return false;
+  }else {
+    return $pass;
+  }
 }
 
 /**
@@ -87,7 +108,7 @@ function comprobarPassword(&$error){
  * @return array|bool          La fila del usuario si existe; o false si no.
  */
 
-function comprobarUsuario($valores, $pdo, &$error){
+function comprobarUsuario($valores, $pdo){
   extract($valores);
    $st = $pdo->prepare('SELECT *
                           FROM usuarios
@@ -99,8 +120,23 @@ function comprobarUsuario($valores, $pdo, &$error){
           return $fila;
       }
   }
-    return false;
+  return false;
 }
+
+function comprobarUsuarioNuevo($valores, $pdo, &$error){
+  extract($valores);
+  $st = $pdo->prepare('SELECT *
+                        FROM usuarios
+                       WHERE login = :login');
+  $st->execute(['login' => $login]);
+  $fila = $st->fetch();
+  if ($fila !== false) {
+    return $fila;
+  } else {
+    return false;
+  }
+}
+
 
 function hasError($key, $error){
 
@@ -170,7 +206,7 @@ function piePagina(){?>
   <nav class="navbar navbar-default navbar-fixed-bottom">
               <div class="container">
                   <div class="navbar-header">
-                    <br> <br>
+                    <br>
                     <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true">Copyright 2018 - Jose María Gallego Martel</span>
                   </div>
                   <div class="navbar-text navbar-right">
