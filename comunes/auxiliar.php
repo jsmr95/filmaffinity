@@ -165,14 +165,17 @@ function navegadorInicio(){ ?>
                     <a class="navbar-brand " href="./generos/index.php">Géneros</a>
                 </div>
                 <div class="navbar-text navbar-right">
-                    <?php if (isset($_SESSION['usuario'])):?>
-                        <?= $_SESSION['usuario'];
-                        $_SESSION['url'] = $_SERVER["REQUEST_URI"];
-                        ?>
-                    <a href="logout.php" class="btn btn-success">Logout</a>
-                    <?php else: ?>
-                    <a href="login.php" class="btn btn-success">Login</a>
-                <?php endif; ?>
+                  <?php if (isset($_SESSION['usuario'])):?>
+                      <span class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></span>
+                      <?php $_SESSION['url'] = $_SERVER["REQUEST_URI"]; ?>
+                  <a href="../logout.php" class="btn btn-success">
+                  <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+                  </a>
+                  <?php else: ?>
+                  <a href="../login.php" class="btn btn-success">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
+                  </a>
+              <?php endif; ?>
                 </div>
             </div>
         </nav>
@@ -189,12 +192,15 @@ function navegador(){ ?>
                   </div>
                   <div class="navbar-text navbar-right">
                       <?php if (isset($_SESSION['usuario'])):?>
-                          <?= $_SESSION['usuario'];
-                          $_SESSION['url'] = $_SERVER["REQUEST_URI"];
-                          ?>
-                      <a href="../logout.php" class="btn btn-success">Logout</a>
+                          <span class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></span>
+                          <?php $_SESSION['url'] = $_SERVER["REQUEST_URI"]; ?>
+                      <a href="../logout.php" class="btn btn-success">
+                      <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+                      </a>
                       <?php else: ?>
-                      <a href="../login.php" class="btn btn-success">Login</a>
+                      <a href="../login.php" class="btn btn-success">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
+                      </a>
                   <?php endif; ?>
                   </div>
               </div>
