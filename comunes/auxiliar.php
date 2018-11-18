@@ -215,7 +215,7 @@ function politicaCookies($pagina){
         <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
         <p class="navbar-text navbar-right">
           <?php $_SESSION['pagina'] = $pagina; ?>
-            <a href="\crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+            <a href="\comunes\crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
         </p>
     </div>
   </nav>
