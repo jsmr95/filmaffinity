@@ -41,7 +41,7 @@ function buscarUsuario($pdo, $id)
 function insertarUsuario($pdo, $fila){
   $st = $pdo->prepare('INSERT INTO usuarios (login, password)
   VALUES (:login,:password)');
-  $st->execute([':login'=>$fila['login'],':password'=>crypt($fila['password'])]);
+  $st->execute([':login'=>$fila['login'],':password'=>password_hash($fila['password'],PASSWORD_DEFAULT)]);
 }
 
 function comprobarId(){
