@@ -1,4 +1,8 @@
-<?php session_start() ?>
+<?php session_start();
+require '../comunes/auxiliar.php';
+require './auxiliar.php';
+navegador();
+?>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -10,8 +14,6 @@
     </head>
     <body>
         <?php
-        require '../comunes/auxiliar.php';
-        require './auxiliar.php';
 
         //El usuario debe estar logeado para poder borrar peliculas
         if (!isset($_SESSION['usuario'])) {
