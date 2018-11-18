@@ -27,9 +27,25 @@ session_start();
               <div class="panel-heading text-center"> FILMAFFINITY </div>
               <div class="panel-body">
                 <pre> <h3><p align="center">Bienvenidos a la página Oficial de Film-Affinity.</p></h3>
-
-    Podrás navegar por las diferentes opciones del navegador! Espero que encuentres la película que buscas!
-              </pre>
+                  <h5><p align="center"> Podrás navegar por las diferentes opciones del navegador! Espero que encuentres la película que buscas!
+                  </p></h5>
+                </pre>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="panel-body ">
+                    <pre>
+                       <a style="padding:2em;display: flex;margin: auto;" href="./peliculas/index.php"
+                       class="btn btn-info"> Visite nuestro módulo de Peliculas. </a>
+                    </pre>
+                </div>
+              </div>
+                <div class="col-md-6">
+                  <div class="panel-body">
+                    <pre>
+                      <a style="padding:2em;display: flex;margin: auto" href='./generos/index.php'
+                      class="btn btn-info"> Visite nuestro módulo de Géneros. </a>
+                    </pre>
+                </div>
               </div>
             </div>
           </div>
