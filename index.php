@@ -17,40 +17,31 @@ session_start();
     require './comunes/auxiliar.php';
     navegadorInicio();
     ?>
-<div class="container">
-  <br>
-  <?= compruebaSession('login','info'); ?>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="center-block">
-        <div class="panel panel-success">
-          <div class="panel-heading text-center"> FILMAFFINITY </div>
-          <div class="panel-body">
-            <pre> <h3><p align="center">Bienvenidos a la página Oficial de Film-Affinity.</p></h3>
+    <div class="container">
+      <br>
+      <?= compruebaSession('login','info'); ?>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="center-block">
+            <div class="panel panel-success">
+              <div class="panel-heading text-center"> FILMAFFINITY </div>
+              <div class="panel-body">
+                <pre> <h3><p align="center">Bienvenidos a la página Oficial de Film-Affinity.</p></h3>
 
-Podrás navegar por las diferentes opciones del navegador! Espero que encuentres la película que buscas!
-          </pre>
+    Podrás navegar por las diferentes opciones del navegador! Espero que encuentres la película que buscas!
+              </pre>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<?php
-//MUESTRO LA NAV SI NO EXISTE LA COOKIE
-if (!isset($_COOKIE['acepta'])): ?>
-<nav class="navbar navbar-default navbar-fixed-bottom navbar-inverse">
-<div class="container">
-    <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
-    <p class="navbar-text navbar-right">
-      <?php $_SESSION['pagina'] = 'index.php'; ?>
-        <a href="crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
-    </p>
-</div>
-</nav>
-<?php endif;
- piePagina(); ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-</body>
+    <?php
+    piePagina();
+    //MUESTRO LA NAV SI NO EXISTE LA COOKIE
+    politicaCookies('../index.php');
+    ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
 </html>

@@ -158,62 +158,82 @@ function irAlIndice(){
 
 function navegadorInicio(){ ?>
 <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand " href="index.php">Menú</a>
-                    <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
-                    <a class="navbar-brand " href="./generos/index.php">Géneros</a>
-                </div>
-                <div class="navbar-text navbar-right">
-                    <?php if (isset($_SESSION['usuario'])):?>
-                        <?= $_SESSION['usuario'];
-                        $_SESSION['url'] = $_SERVER["REQUEST_URI"];
-                        ?>
-                    <a href="logout.php" class="btn btn-success">Logout</a>
-                    <?php else: ?>
-                    <a href="login.php" class="btn btn-success">Login</a>
-                <?php endif; ?>
-                </div>
-            </div>
-        </nav>
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand " href="index.php">Menú</a>
+        <a class="navbar-brand " href="./peliculas/index.php">Películas</a>
+        <a class="navbar-brand " href="./generos/index.php">Géneros</a>
+      </div>
+      <div class="navbar-text navbar-right">
+        <?php if (isset($_SESSION['usuario'])):?>
+          <span class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></span>
+          <?php $_SESSION['url'] = $_SERVER["REQUEST_URI"]; ?>
+        <a href="../logout.php" class="btn btn-success">
+        <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+        </a>
+        <?php else: ?>
+        <a href="../login.php" class="btn btn-success">
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
+        </a>
+    <?php endif; ?>
+      </div>
+    </div>
+  </nav>
 <?php
 }
 
 function navegador(){ ?>
   <nav class="navbar navbar-default">
-              <div class="container">
-                  <div class="navbar-header">
-                      <a class="navbar-brand " href="../index.php">Menú</a>
-                      <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
-                      <a class="navbar-brand " href="../generos/index.php">Géneros</a>
-                  </div>
-                  <div class="navbar-text navbar-right">
-                      <?php if (isset($_SESSION['usuario'])):?>
-                          <?= $_SESSION['usuario'];
-                          $_SESSION['url'] = $_SERVER["REQUEST_URI"];
-                          ?>
-                      <a href="../logout.php" class="btn btn-success">Logout</a>
-                      <?php else: ?>
-                      <a href="../login.php" class="btn btn-success">Login</a>
-                  <?php endif; ?>
-                  </div>
-              </div>
-          </nav>
+    <div class="container">
+      <div class="navbar-header">
+          <a class="navbar-brand " href="../index.php">Menú</a>
+          <a class="navbar-brand " href="../peliculas/index.php">Películas</a>
+          <a class="navbar-brand " href="../generos/index.php">Géneros</a>
+      </div>
+      <div class="navbar-text navbar-right">
+        <?php if (isset($_SESSION['usuario'])):?>
+          <span class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></span>
+          <?php $_SESSION['url'] = $_SERVER["REQUEST_URI"]; ?>
+        <a href="../logout.php" class="btn btn-success">
+        <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+        </a>
+        <?php else: ?>
+        <a href="../login.php" class="btn btn-success">
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
+        </a>
+      <?php endif; ?>
+      </div>
+    </div>
+  </nav>
   <?php
+}
+
+function politicaCookies($pagina){
+  if (!isset($_COOKIE['acepta'])): ?>
+  <nav class="navbar navbar-default navbar-fixed-bottom navbar-inverse">
+    <div class="container">
+        <p class="navbar-text">Tienes que aceptar las politicas de cookies.</p>
+        <p class="navbar-text navbar-right">
+          <?php $_SESSION['pagina'] = $pagina; ?>
+            <a href="\comunes\crear_cookie.php" class="btn btn-success">Aceptar Cookies</a>
+        </p>
+    </div>
+  </nav>
+  <?php endif;
 }
 
 function piePagina(){?>
   <nav class="navbar navbar-default navbar-fixed-bottom">
-              <div class="container">
-                  <div class="navbar-header">
-                    <br>
-                    <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true">Copyright 2018 - Jose María Gallego Martel</span>
-                  </div>
-                  <div class="navbar-text navbar-right">
-                      <h4>FilmAffinity <span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span> </h4>
-                  </div>
-              </div>
-          </nav>
+    <div class="container">
+      <div class="navbar-header">
+        <br>
+        <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true">Copyright 2018 - Jose María Gallego Martel</span>
+      </div>
+      <div class="navbar-text navbar-right">
+          <h4>FilmAffinity <span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span> </h4>
+      </div>
+    </div>
+  </nav>
   <?php
 
 }
