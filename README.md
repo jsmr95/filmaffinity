@@ -4,9 +4,9 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 
 # Por hacer:
 
-- Comprobaciones y mensajes de error en el formulario de *login*.
-- Barra de menús en todas las páginas.
-- Pie de página en todas las páginas.
+- Comprobaciones y mensajes de error en el formulario de *login*.         --DONE
+- Barra de menús en todas las páginas.                                    --DONE
+- Pie de página en todas las páginas.                                     --DONE
 - Módulo de géneros.
 - Portal principal de la aplicación para ir a géneros o a películas.
 - Un *alert* para errores.
