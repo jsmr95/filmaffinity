@@ -18,6 +18,7 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 # Por hacer propio(no tarea):
 
 - Hacer en los usuarios sensitivo a las mayusculas
+- Al intentar crear un usuario que ya existe y clicar el volver, da error de passIncorrect
 
 
 # Hecho de más:
