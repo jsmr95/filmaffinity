@@ -17,10 +17,10 @@ navegador();
 
         //El usuario debe estar logeado para poder borrar peliculas
         if (!isset($_SESSION['usuario'])) {
-           $_SESSION['mensaje'] = 'Debe iniciar sesión para poder borrar películas';
+           $_SESSION['error'] = 'Debe iniciar sesión para poder borrar películas';
            irAlIndice();
        } elseif ($_SESSION['usuario'] != 'admin') {
-           $_SESSION['mensaje'] = 'Debe ser administrador para poder borrar películas';
+           $_SESSION['error'] = 'Debe ser administrador para poder borrar películas';
            irAlIndice();
        }
 
