@@ -10,7 +10,7 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 - Módulo de géneros.                                                      --DONE
 - Portal principal de la aplicación para ir a géneros o a películas.      --DONE
 - Un *alert* para errores.                                                --DONE
-- Poder buscar películas por otros criterios: año, duración, género.
+- Poder buscar películas por otros criterios: año, duración, género.      --DONE
 - Usar `h()` donde corresponda para evitar problemas de XSS.
 - Evitar duplicidades y refactorizar.
 - Documentar todo el código con DocBlocks.
