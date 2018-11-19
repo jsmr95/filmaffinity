@@ -221,14 +221,13 @@ function politicaCookies($pagina){
 }
 
 function piePagina(){?>
-  <nav class="navbar navbar-default navbar-fixed-bottom">
+  <nav class="navbar navbar-default navbar-bottom">
     <div class="container">
-      <div class="navbar-header">
-        <br>
-        <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true">Copyright 2018 - Jose María Gallego Martel</span>
+      <div class="navbar-text navbar-left">
+        <h4><span class="glyphicon glyphicon-copyright-mark" aria-hidden="true">Copyright 2018 - Jose María Gallego Martel</span></h4>
       </div>
       <div class="navbar-text navbar-right">
-          <h4>FilmAffinity <span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span> </h4>
+        <h4>FilmAffinity <span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span> </h4>
       </div>
     </div>
   </nav>
