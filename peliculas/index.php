@@ -48,11 +48,9 @@ navegador();
         $buscarAnyo = existe('buscarAnyo');
         $buscarDuracion = existe('buscarDuracion');
         $buscarGenero = existe('buscarGenero');
-        var_dump($buscarTitulo);
-        var_dump($buscarAnyo);
-        var_dump($buscarDuracion);
-        var_dump($buscarGenero);
+
         $st = buscarPeliculasBuscadores($pdo,$buscarTitulo,$buscarAnyo,$buscarDuracion,$buscarGenero);
+
         ?>
       </div>
 
