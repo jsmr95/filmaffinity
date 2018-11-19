@@ -14,6 +14,11 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 - Usar `h()` donde corresponda para evitar problemas de XSS.
 - Evitar duplicidades y refactorizar.
 - Documentar todo el código con DocBlocks.
+------------------------------------------------------
+# Por hacer propio(no tarea):
+
+- Hacer en los usuarios sensitivo a las mayusculas
+
 
 # Hecho de más:
 

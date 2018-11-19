@@ -8,6 +8,69 @@ const PAR = [
     'genero_id' => '',
 ];
 
+function existe($buscador){
+  return isset($_GET[$buscador]) ? trim($_GET[$buscador]) : '';
+}
+
+function buscarPeliculasBuscadores($pdo,$buscarTitulo,$buscarAnyo,$buscarDuracion,$buscarGenero)
+{
+  if ($buscarAnyo == '' && $buscarDuracion == '') {
+    $st = $pdo->prepare('SELECT p.*, genero
+                        FROM peliculas p
+                        JOIN generos g
+                        ON genero_id = g.id
+                        WHERE position(lower(:titulo) in lower(titulo)) != 0
+                        AND position(lower(:genero) in lower(genero)) != 0 '); //position es como mb_substrpos() de php, devuelve 0
+                                                                                //si no encuentra nada. ponemos lower() de postgre para
+                                                                                //que no distinga entre mayu y minus
+    //En execute(:titulo => "$valor"), indicamos lo que vale nuestros marcadores de prepare(:titulo)
+    $st->execute([':titulo' => "$buscarTitulo", ':genero' => "$buscarGenero"]);
+    return $st;
+
+  }elseif ($buscarAnyo == '' && $buscarDuracion != '') {
+
+    $st = $pdo->prepare('SELECT p.*, genero
+                        FROM peliculas p
+                        JOIN generos g
+                        ON genero_id = g.id
+                        WHERE position(lower(:titulo) in lower(titulo)) != 0
+                        AND :duracion = duracion
+                        AND position(lower(:genero) in lower(genero)) != 0 ');
+
+    $st->execute([':titulo' => "$buscarTitulo", ':duracion' => "$buscarDuracion",
+                  ':genero' => "$buscarGenero"]);
+    return $st;
+
+  } elseif ($buscarAnyo != '' && $buscarDuracion == '') {
+
+    $st = $pdo->prepare('SELECT p.*, genero
+                        FROM peliculas p
+                        JOIN generos g
+                        ON genero_id = g.id
+                        WHERE position(lower(:titulo) in lower(titulo)) != 0
+                        AND :anyo = anyo
+                        AND position(lower(:genero) in lower(genero)) != 0 ');
+
+    $st->execute([':titulo' => "$buscarTitulo", ':anyo' => "$buscarAnyo",
+                  ':genero' => "$buscarGenero"]);
+    return $st;
+  }else {
+
+    $st = $pdo->prepare('SELECT p.*, genero
+                      FROM peliculas p
+                      JOIN generos g
+                      ON genero_id = g.id
+                      WHERE position(lower(:titulo) in lower(titulo)) != 0
+                      AND :anyo = anyo
+                      AND :duracion = duracion
+                      AND position(lower(:genero) in lower(genero)) != 0 ');
+
+    $st->execute([':titulo' => "$buscarTitulo", ':anyo' => "$buscarAnyo",
+                ':duracion' => "$buscarDuracion", ':genero' => "$buscarGenero"]);
+    return $st;
+  }
+}
+
 function buscarPelicula($pdo, $id)
 {
     $st = $pdo->prepare('SELECT * from peliculas WHERE id = :id');
