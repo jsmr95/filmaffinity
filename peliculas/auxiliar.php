@@ -8,6 +8,10 @@ const PAR = [
     'genero_id' => '',
 ];
 
+function existe($buscador){
+  return isset($_GET[$buscador]) ? trim($_GET[$buscador]) : '';
+}
+
 function buscarPelicula($pdo, $id)
 {
     $st = $pdo->prepare('SELECT * from peliculas WHERE id = :id');

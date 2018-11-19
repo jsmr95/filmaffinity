@@ -44,9 +44,10 @@ navegador();
               $pdo->commit();
             }
 
-            $buscarTitulo = isset($_GET['buscarTitulo'])
-                            ? trim($_GET['buscarTitulo'])
-                            : '';
+            $buscarTitulo = existe('buscarTitulo');
+            $buscarTitulo = existe('buscarAnyo');
+            $buscarTitulo = existe('buscarDuracion');
+            $buscarTitulo = existe('buscarGenero');
             $st = $pdo->prepare('SELECT p.*, genero
                                 FROM peliculas p
                                 JOIN generos g
