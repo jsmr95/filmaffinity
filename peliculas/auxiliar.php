@@ -12,6 +12,23 @@ function existe($buscador){
   return isset($_GET[$buscador]) ? trim($_GET[$buscador]) : '';
 }
 
+function buscarPeliculasBuscadores($pdo, $buscarTitulo, $buscarAnyo, $buscarDuracion, $buscarGenero)
+{
+  $st = $pdo->prepare('SELECT p.*, genero
+                      FROM peliculas p
+                      JOIN generos g
+                      ON genero_id = g.id
+                      WHERE position(lower(:titulo) in lower(titulo)) != 0
+                      -- AND :anyo = anyo
+                      -- AND :duracion = duracion
+                      -- AND position(lower(:genero) in lower(genero)) != 0
+                      '); //position es como mb_substrpos() de php, devuelve 0
+                                                                              //si no encuentra nada. ponemos lower() de postgre para
+                                                                              //que no distinga entre mayu y minus
+  //En execute(:titulo => "$valor"), indicamos lo que vale nuestros marcadores de prepare(:titulo)
+  return $st->execute([':titulo' => "$buscarTitulo"]);
+}
+
 function buscarPelicula($pdo, $id)
 {
     $st = $pdo->prepare('SELECT * from peliculas WHERE id = :id');
