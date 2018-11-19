@@ -8,67 +8,84 @@ const PAR = [
     'genero_id' => '',
 ];
 
+const BUSCADORES = ['título','año','duración','género'];
+
 function existe($buscador){
   return isset($_GET[$buscador]) ? trim($_GET[$buscador]) : '';
 }
 
-function buscarPeliculasBuscadores($pdo,$buscarTitulo,$buscarAnyo,$buscarDuracion,$buscarGenero)
+function opcionesBuscar($buscador)
 {
-  if ($buscarAnyo == '' && $buscarDuracion == '') {
+  ?>
+  <select name='buscador'><?php
+    foreach (BUSCADORES as $busca):
+      ?>
+        <option value="<?= $busca ?>"  <?= buscadorSeleccionado($buscador,$busca)?>>
+            <?= $busca ?>
+        </option>
+      <?php
+    endforeach;
+    ?>
+  </select><?php
+}
+
+function buscarPeliculasBuscadores($pdo,$buscador, $buscar,&$error)
+{
+  if ($buscador == 'título' || $buscador == '') {
     $st = $pdo->prepare('SELECT p.*, genero
                         FROM peliculas p
                         JOIN generos g
                         ON genero_id = g.id
-                        WHERE position(lower(:titulo) in lower(titulo)) != 0
-                        AND position(lower(:genero) in lower(genero)) != 0 '); //position es como mb_substrpos() de php, devuelve 0
+                        WHERE position(lower(:titulo) in lower(titulo)) != 0 '); //position es como mb_substrpos() de php, devuelve 0
                                                                                 //si no encuentra nada. ponemos lower() de postgre para
                                                                                 //que no distinga entre mayu y minus
     //En execute(:titulo => "$valor"), indicamos lo que vale nuestros marcadores de prepare(:titulo)
-    $st->execute([':titulo' => "$buscarTitulo", ':genero' => "$buscarGenero"]);
+    $st->execute([':titulo' => "$buscar"]);
     return $st;
 
-  }elseif ($buscarAnyo == '' && $buscarDuracion != '') {
-
+  }elseif ($buscador == 'género') {
     $st = $pdo->prepare('SELECT p.*, genero
                         FROM peliculas p
                         JOIN generos g
                         ON genero_id = g.id
-                        WHERE position(lower(:titulo) in lower(titulo)) != 0
-                        AND :duracion = duracion
-                        AND position(lower(:genero) in lower(genero)) != 0 ');
-
-    $st->execute([':titulo' => "$buscarTitulo", ':duracion' => "$buscarDuracion",
-                  ':genero' => "$buscarGenero"]);
-    return $st;
-
-  } elseif ($buscarAnyo != '' && $buscarDuracion == '') {
-
-    $st = $pdo->prepare('SELECT p.*, genero
-                        FROM peliculas p
-                        JOIN generos g
-                        ON genero_id = g.id
-                        WHERE position(lower(:titulo) in lower(titulo)) != 0
-                        AND :anyo = anyo
-                        AND position(lower(:genero) in lower(genero)) != 0 ');
-
-    $st->execute([':titulo' => "$buscarTitulo", ':anyo' => "$buscarAnyo",
-                  ':genero' => "$buscarGenero"]);
-    return $st;
-  }else {
-
-    $st = $pdo->prepare('SELECT p.*, genero
-                      FROM peliculas p
-                      JOIN generos g
-                      ON genero_id = g.id
-                      WHERE position(lower(:titulo) in lower(titulo)) != 0
-                      AND :anyo = anyo
-                      AND :duracion = duracion
-                      AND position(lower(:genero) in lower(genero)) != 0 ');
-
-    $st->execute([':titulo' => "$buscarTitulo", ':anyo' => "$buscarAnyo",
-                ':duracion' => "$buscarDuracion", ':genero' => "$buscarGenero"]);
+                        WHERE position(lower(:genero) in lower(genero)) != 0 ');
+    $st->execute([':genero' => "$buscar"]);
     return $st;
   }
+
+  elseif ($buscador == 'duración') {
+    if ($buscar == '') {
+      $error['duración'] = 'La duración no puede estar vacía.';
+      return false;
+    }else {
+    $st = $pdo->prepare('SELECT p.*, genero
+                        FROM peliculas p
+                        JOIN generos g
+                        ON genero_id = g.id
+                        WHERE :duracion = duracion');
+
+    $st->execute([':duracion' => "$buscar"]);
+    return $st;
+    }
+
+  } elseif ($buscador == 'año') {
+      if ($buscar == '') {
+        $error['año'] = 'El año no puede estar vacío.';
+        return false;
+      }elseif ($buscar <1000 || $buscar > 9999) {
+        $error['año'] = 'El año debe ser de 4 números.';
+        return false;
+      }else {
+    $st = $pdo->prepare('SELECT p.*, genero
+                        FROM peliculas p
+                        JOIN generos g
+                        ON genero_id = g.id
+                        WHERE :anyo = anyo ');
+
+    $st->execute([':anyo' => "$buscar"]);
+    return $st;
+      }
+    }
 }
 
 function buscarPelicula($pdo, $id)
@@ -225,7 +242,12 @@ function comprobarPelicula($pdo, $id){
     return $fila;
 }
 
-function generoSeleccionado($genero, $genero_id){
-
+function generoSeleccionado($genero, $genero_id)
+{
   return $genero == $genero_id ? "selected" : "";
+}
+
+function buscadorSeleccionado($buscador, $busca)
+{
+  return $buscador == $busca ? "selected" : "";
 }
