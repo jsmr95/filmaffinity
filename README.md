@@ -9,11 +9,15 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 - Pie de página en todas las páginas.                                     --DONE
 - Módulo de géneros.                                                      --DONE
 - Portal principal de la aplicación para ir a géneros o a películas.      --DONE
-- Un *alert* para errores.
+- Un *alert* para errores.                                                --DONE
 - Poder buscar películas por otros criterios: año, duración, género.
 - Usar `h()` donde corresponda para evitar problemas de XSS.
 - Evitar duplicidades y refactorizar.
 - Documentar todo el código con DocBlocks.
+
+# Hecho de más:
+
+- Implementar crear_cuenta con enlace en login.
 
 # Investigar:
 
