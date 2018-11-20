@@ -43,13 +43,11 @@ navegador();
           }
           $pdo->commit();
         }
+        $error = [];
+        $buscar = existe('buscar');
+        $buscador = existe('buscador');
 
-        $buscarTitulo = existe('buscarTitulo');
-        $buscarAnyo = existe('buscarAnyo');
-        $buscarDuracion = existe('buscarDuracion');
-        $buscarGenero = existe('buscarGenero');
-
-        $st = buscarPeliculasBuscadores($pdo,$buscarTitulo,$buscarAnyo,$buscarDuracion,$buscarGenero);
+        $st = buscarPeliculasBuscadores($pdo,$buscador, $buscar, $error);
 
         ?>
       </div>
@@ -62,51 +60,16 @@ navegador();
             <div class="col-md-3">
               <div class="panel panel-default" id="fondoTabla">
                 <div class="panel-body">
-                  <div class="form-group">
-                    <label for="buscarTitulo">Buscar por título:</label>
-                    <input id="buscarTitulo" type="text" name="buscarTitulo"
-                    value="<?= $buscarTitulo ?>" class="form-control">
+                  <div class="form-group <?= hasError($buscador, $error) ?>">
+                    <label for="buscar">Buscar por <?= opcionesBuscar($buscador) ?>:</label>
+                    <input id="buscar" type="text" name="buscar"
+                    value="<?= $buscar ?>" class="form-control">
+                    <?php mensajeError($buscador, $error) ?>
                   </div>
                 </div>
               </div>
+              <input type="submit" value="Buscar" class="btn btn-primary">
             </div>
-          <div class="col-md-3">
-          <!-- Creamos un buscador de peliculas por año-->
-          <div class="panel panel-default" id="fondoTabla">
-            <div class="panel-body">
-              <div class="form-group">
-                <label for="buscarAnyo">Buscar por año:</label>
-                <input id="buscarAnyo" type="text" name="buscarAnyo"
-                value="<?= $buscarAnyo ?>" class="form-control">
-              </div>
-            </div>
-          </div>
-        </div>
-          <div class="col-md-3">
-            <!-- Creamos un buscador de peliculas por duración-->
-            <div class="panel panel-default" id="fondoTabla">
-              <div class="panel-body">
-                <div class="form-group">
-                  <label for="buscarDuracion">Buscar por duración:</label>
-                  <input id="buscarDuracion" type="text" name="buscarDuracion"
-                  value="<?= $buscarDuracion ?>" class="form-control">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <!-- Creamos un buscador de peliculas por género-->
-            <div class="panel panel-default" id="fondoTabla">
-              <div class="panel-body">
-                <div class="form-group">
-                  <label for="buscarGenero">Buscar por género:</label>
-                  <input id="buscarGenero" type="text" name="buscarGenero"
-                  value="<?= $buscarGenero ?>" class="form-control">
-                </div>
-              </div>
-            </div>
-          </div>
-            <input type="submit" value="Buscar" class="btn btn-primary">
           </form>
         </fieldset>
       </div>
@@ -123,26 +86,29 @@ navegador();
                   <th>Acciones</th>
               </thead>
               <tbody>
-                  <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
-                                                          tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
-                  <tr>
-                      <td><?= h($fila['titulo']) ?></td>
-                      <td><?= h($fila['anyo']) ?></td>
-                      <td><?= h($fila['sinopsis']) ?></td>
-                      <td><?= h($fila['duracion']) ?></td>
-                      <td><?= h($fila['genero']) ?></td>
-                      <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
-                      <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
-                             class="btn btn-xs btn-danger">
-                             Borrar
-                           </a>
-                           <a href="modificar.php?id=<?= $fila['id'] ?>"
-                             class="btn btn-xs btn-info">
-                             Modificar
-                           </a>
-                      </td>
-                  </tr>
-                  <?php endwhile ?>
+                  <?php
+                  if ($st !== false) {
+                    while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
+                                                            tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
+                    <tr>
+                        <td><?= h($fila['titulo']) ?></td>
+                        <td><?= h($fila['anyo']) ?></td>
+                        <td><?= h($fila['sinopsis']) ?></td>
+                        <td><?= h($fila['duracion']) ?></td>
+                        <td><?= h($fila['genero']) ?></td>
+                        <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
+                        <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
+                               class="btn btn-xs btn-danger">
+                               Borrar
+                             </a>
+                             <a href="modificar.php?id=<?= $fila['id'] ?>"
+                               class="btn btn-xs btn-info">
+                               Modificar
+                             </a>
+                        </td>
+                    </tr>
+                  <?php endwhile;
+                }  ?>
             </tbody>
           </table>
         </div>
