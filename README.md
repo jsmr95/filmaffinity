@@ -10,15 +10,16 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 - Módulo de géneros.                                                      --DONE
 - Portal principal de la aplicación para ir a géneros o a películas.      --DONE
 - Un *alert* para errores.                                                --DONE
-- Poder buscar películas por otros criterios: año, duración, género.      --DONE
-- Usar `h()` donde corresponda para evitar problemas de XSS.
+- Poder buscar películas por otros criterios: año, duración, género.      
+- Usar `h()` donde corresponda para evitar problemas de XSS.              --DONE
 - Evitar duplicidades y refactorizar.
 - Documentar todo el código con DocBlocks.
 ------------------------------------------------------
 # Por hacer propio(no tarea):
 
-- Hacer en el insert usuarios sensitive a las mayusculas
-- Al intentar crear un usuario que ya existe y clicar el volver, da error de passIncorrect
+- Hacer en el insert usuarios sensitive a las mayusculas                  --DONE
+- Al intentar crear un usuario que ya existe y clicar el volver,
+da error de passIncorrect
 
 
 # Hecho de más:
