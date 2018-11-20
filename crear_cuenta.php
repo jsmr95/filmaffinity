@@ -32,8 +32,8 @@ navegador();
      $valores['password'] = comprobarPassword($error);
      $valores['passwordRepeat'] = comprobarPasswordNueva($valores['password'], $error);
      $usuario = comprobarUsuarioNuevo($valores,$pdo,$error);
+     var_dump($error);
      comprobarErrores($error);
-     insertarUsuario($pdo,$valores);
      if ($usuario) {
        $_SESSION['error'] = 'El usuario ya existe, debe escoger otro.';
        //Guardo las incorrectas para que se mantenga
@@ -45,6 +45,7 @@ navegador();
          $_SESSION['userIncorrecto'] = $valores['login'];
          header('Location: crear_cuenta.php');
        }else{
+         insertarUsuario($pdo,$valores);
        $_SESSION['login'] = "Su cuenta ha sido creada, pruebe a iniciar sesión !!";
        header('Location: login.php');
       }

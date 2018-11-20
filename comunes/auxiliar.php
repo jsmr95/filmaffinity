@@ -127,7 +127,7 @@ function comprobarUsuarioNuevo($valores, $pdo, &$error){
   extract($valores);
   $st = $pdo->prepare('SELECT *
                         FROM usuarios
-                       WHERE position(lower(:login) in lower(login)) != 0 ');
+                       WHERE login = :login');
   $st->execute(['login' => $login]);
   $fila = $st->fetch();
   if ($fila !== false) {
