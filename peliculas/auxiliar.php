@@ -10,10 +10,6 @@ const PAR = [
 
 const BUSCADORES = ['título','año','duración','género'];
 
-function existe($buscador){
-  return isset($_GET[$buscador]) ? trim($_GET[$buscador]) : '';
-}
-
 function opcionesBuscar($buscador)
 {
   ?>
@@ -29,7 +25,7 @@ function opcionesBuscar($buscador)
   </select><?php
 }
 
-function buscarPeliculasBuscadores($pdo,$buscador, $buscar,&$error)
+function sacaPeliculasBuscadores($pdo,$buscador, $buscar,&$error)
 {
   if ($buscador == 'título' || $buscador == '') {
     $st = $pdo->prepare('SELECT p.*, genero
@@ -158,7 +154,8 @@ function insertarPelicula($pdo, $fila)
     $st->execute($fila);
 }
 
-function modificarPelicula($pdo, $fila, $id){
+function modificarPelicula($pdo, $fila, $id)
+{
     $st = $pdo->prepare('UPDATE peliculas
                             SET titulo = :titulo
                                 , anyo = :anyo
@@ -167,6 +164,51 @@ function modificarPelicula($pdo, $fila, $id){
                                 , genero_id = :genero_id
                             WHERE id = :id');
     $st->execute($fila + ['id' => $id]);
+}
+
+function mostrarPeliculas($st)
+{
+  ?>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover table-striped">
+          <thead>
+              <th>Título</th>
+              <th>Año</th>
+              <th>Sinopsis</th>
+              <th>Duración</th>
+              <th>Género</th>
+              <th>Acciones</th>
+          </thead>
+          <tbody>
+              <?php
+              if ($st !== false) {
+                while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
+                                                        tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
+                <tr>
+                    <td><?= h($fila['titulo']) ?></td>
+                    <td><?= h($fila['anyo']) ?></td>
+                    <td><?= h($fila['sinopsis']) ?></td>
+                    <td><?= h($fila['duracion']) ?></td>
+                    <td><?= h($fila['genero']) ?></td>
+                    <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
+                    <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
+                           class="btn btn-xs btn-danger">
+                           Borrar
+                         </a>
+                         <a href="modificar.php?id=<?= $fila['id'] ?>"
+                           class="btn btn-xs btn-info">
+                           Modificar
+                         </a>
+                    </td>
+                </tr>
+              <?php endwhile;
+            }  ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <?php
 }
 
 function mostrarFormulario($valores, $error, $pdo, $accion)
@@ -234,7 +276,8 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
     <?php
 }
 
-function comprobarPelicula($pdo, $id){
+function comprobarPelicula($pdo, $id)
+{
     $fila = buscarPelicula($pdo, $id);
     if ($fila === false) {
         throw new ParamException();

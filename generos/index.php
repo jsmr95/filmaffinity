@@ -44,16 +44,8 @@ navegador();
                 }
                 $pdo->commit();
             }
-            $buscarGenero = isset($_GET['buscarGenero'])
-                            ? trim($_GET['buscarGenero'])
-                            : '';
-            $st = $pdo->prepare('SELECT *
-                                FROM generos
-                                WHERE position(lower(:genero) in lower(genero)) != 0'); //position es como mb_substrpos() de php, devuelve 0
-                                                                                        //si no encuentra nada. ponemos lower() de postgre para
-                                                                                        //que no distinga entre mayu y minus
-            //En execute(:titulo => "$valor"), indicamos lo que vale nuestros marcadores de prepare(:titulo)
-            $st->execute([':genero' => "$buscarGenero"]);
+            $buscarGenero = existe('buscarGenero');
+            $st = sacaGeneros($pdo, $buscarGenero);
             ?>
           </div>
         <div class="row" id="busqueda">
@@ -73,38 +65,11 @@ navegador();
             </div>
           </div>
           <hr>
-          <div class="row">
-            <div class="col-md-4">
-              <table class="table table-bordered table-hover table-striped">
-                  <thead>
-                      <th>Género</th>
-                      <th>Acciones</th>
-                  </thead>
-                  <tbody>
-                      <?php while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
-                                                              tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
-                      <tr>
-                          <td><?= h($fila['genero']) ?></td>
-                          <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
-                                 class="btn btn-xs btn-danger">
-                                 Borrar
-                               </a>
-                               <a href="modificar.php?id=<?= $fila['id'] ?>"
-                                      class="btn btn-xs btn-primary">
-                                      Modificar
-                                    </a>
-                          </td>
-                          <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
-                      </tr>
-                      <?php endwhile ?>
-                </tbody>
-              </table>
-            </div>
-        </div>
+          <?= mostrarGeneros($st); ?>
         <div class="row">
-            <div class="text-center">
-                <a href="insertar.php" class="btn btn-info">Insertar un nuevo género</a>
-            </div>
+          <div class="text-center">
+            <a href="insertar.php" class="btn btn-info">Insertar un nuevo género</a>
+          </div>
         </div>
       </div>
       <?php

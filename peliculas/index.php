@@ -47,7 +47,7 @@ navegador();
         $buscar = existe('buscar');
         $buscador = existe('buscador');
 
-        $st = buscarPeliculasBuscadores($pdo,$buscador, $buscar, $error);
+        $st = sacaPeliculasBuscadores($pdo,$buscador, $buscar, $error);
 
         ?>
       </div>
@@ -74,45 +74,7 @@ navegador();
         </fieldset>
       </div>
   <hr>
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-bordered table-hover table-striped">
-              <thead>
-                  <th>Título</th>
-                  <th>Año</th>
-                  <th>Sinopsis</th>
-                  <th>Duración</th>
-                  <th>Género</th>
-                  <th>Acciones</th>
-              </thead>
-              <tbody>
-                  <?php
-                  if ($st !== false) {
-                    while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
-                                                            tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
-                    <tr>
-                        <td><?= h($fila['titulo']) ?></td>
-                        <td><?= h($fila['anyo']) ?></td>
-                        <td><?= h($fila['sinopsis']) ?></td>
-                        <td><?= h($fila['duracion']) ?></td>
-                        <td><?= h($fila['genero']) ?></td>
-                        <!--Al ser un enlace, la peticion es GET, por lo que le pasamos el id de la pelicula por la misma URL -->
-                        <td><a href="confirm_borrado.php?id=<?= $fila['id'] ?>"
-                               class="btn btn-xs btn-danger">
-                               Borrar
-                             </a>
-                             <a href="modificar.php?id=<?= $fila['id'] ?>"
-                               class="btn btn-xs btn-info">
-                               Modificar
-                             </a>
-                        </td>
-                    </tr>
-                  <?php endwhile;
-                }  ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <?= mostrarPeliculas($st); ?>
       <div class="row">
         <div class="text-center">
           <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
