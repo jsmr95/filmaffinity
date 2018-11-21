@@ -46,8 +46,8 @@ navegador();
          header('Location: crear_cuenta.php');
        }else{
          insertarUsuario($pdo,$valores);
-       $_SESSION['login'] = "Su cuenta ha sido creada, pruebe a iniciar sesión !!";
-       header('Location: login.php');
+         $_SESSION['login'] = "Su cuenta ha sido creada, pruebe a iniciar sesión !!";
+         header('Location: login.php');
       }
      }
    } catch (EmptyParamException|ValidationException $e){

@@ -21,7 +21,7 @@ navegador();
 
       $valores = PAR_LOGIN;
       //Compruebo si ha fallado en el login o contraseña para msotrarlos
-      if (isset($_SESSION['userIncorrecto']) || isset($_SESSION['passIncorrecta'])) {
+      if (isset($_SESSION['passIncorrecta']) || isset($_SESSION['userIncorrecto'])) {
         $valores['login'] = $_SESSION['userIncorrecto'];
         $valores['password'] = $_SESSION['passIncorrecta'];
         $_SESSION['userIncorrecto'] = '';
