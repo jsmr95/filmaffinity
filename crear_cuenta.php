@@ -55,44 +55,10 @@ navegador();
    } catch (ParamException $e){
         header('Location: crear_cuenta.php');
    }
-  ?>
 
-    <div class="row">
-      <div class="col-md-4">
-      <div class="panel panel-primary">
-          <div class="panel-heading">
-              <h3 class="panel-title">Crear una nueva cuenta</h3>
-          </div>
-          <div class="panel-body">
-            <form action="" method="post">
-              <div class="form-group <?= hasError('login', $error) ?>">
-                <label for="login" class="control-label">Usuario</label>
-                <input id="login" type="text" name="login"
-                class="form-control" value="<?= h($valores['login']) ?>">
-                <?php mensajeError('login', $error) ?>
-              </div>
-              <div class="form-group <?= hasError('password', $error) ?>">
-                <label for="password" class="control-label">Contraseña</label>
-                <input id="password" type="password" name="password"
-                class="form-control" value="<?= h($valores['password']) ?>">
-                <?php mensajeError('password', $error) ?>
-              </div>
-              <div class="form-group <?= hasError('passwordRepeat', $error) ?>">
-                <label for="passwordRepeat" class="control-label">Vuelva a introducir la contraseña:</label>
-                <input id="passwordRepeat" type="password" name="passwordRepeat"
-                class="form-control" value="<?= h($valores['passwordRepeat']) ?>">
-                <?php mensajeError('passwordRepeat', $error) ?>
-              </div>
-              <input type="submit" value="Crear cuenta"
-              class="btn btn-success">
-              <a href="login.php" class="btn btn-info">Volver</a>
-            </form>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
-  <?php piePagina();
+  mostrarCrearCuenta($valores, $error);
+
+  piePagina();
   politicaCookies('../crear_cuenta.php')?>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

@@ -16,43 +16,9 @@ session_start();
     <?php
     require './comunes/auxiliar.php';
     navegadorInicio();
-    ?>
-    <div class="container">
-      <br>
-      <?= compruebaSession('login','info'); ?>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="center-block">
-            <div class="panel panel-success">
-              <div class="panel-heading text-center"> FILMAFFINITY </div>
-              <div class="panel-body">
-                <pre> <h3><p align="center">Bienvenidos a la página Oficial de Film-Affinity.</p></h3>
-                  <h5><p align="center"> Podrás navegar por las diferentes opciones del navegador! Espero que encuentres la película que buscas!
-                  </p></h5>
-                </pre>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="panel-body ">
-                    <pre>
-                       <a style="padding:2em;display: flex;margin: auto;" href="./peliculas/index.php"
-                       class="btn btn-info"> Visite nuestro módulo de Peliculas. </a>
-                    </pre>
-                </div>
-              </div>
-                <div class="col-md-6">
-                  <div class="panel-body">
-                    <pre>
-                      <a style="padding:2em;display: flex;margin: auto" href='./generos/index.php'
-                      class="btn btn-info"> Visite nuestro módulo de Géneros. </a>
-                    </pre>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <?php
+
+    mostrarMenu();
+
     piePagina();
     //MUESTRO LA NAV SI NO EXISTE LA COOKIE
     politicaCookies('../index.php');
