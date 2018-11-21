@@ -164,7 +164,7 @@ function navegadorInicio(){ ?>
       </div>
       <div class="navbar-text navbar-right">
         <?php if (isset($_SESSION['usuario'])):?>
-          <span class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></span>
+          <a class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></a>
           <?php $_SESSION['url'] = $_SERVER["REQUEST_URI"]; ?>
         <a href="../logout.php" class="btn btn-success">
         <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
@@ -190,7 +190,7 @@ function navegador(){ ?>
       </div>
       <div class="navbar-text navbar-right">
         <?php if (isset($_SESSION['usuario'])):?>
-          <span class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></span>
+          <a class="label label-info glyphicon glyphicon-user"> <?= $_SESSION['usuario']?></a>
           <?php $_SESSION['url'] = $_SERVER["REQUEST_URI"]; ?>
         <a href="../logout.php" class="btn btn-success">
         <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout

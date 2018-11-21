@@ -19,7 +19,7 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 
 - Hacer en el insert usuarios sensitive a las mayusculas                  --DONE
 - Al intentar crear un usuario que ya existe y clicar el volver,
-da error de passIncorrect
+da error de passIncorrect                                                 --DONE
 
 
 # Hecho de más:
