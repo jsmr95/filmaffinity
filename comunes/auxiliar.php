@@ -1,8 +1,19 @@
 <?php
 
+/**
+ * CONSTANTES PARA EL PROGRAMA
+ * @param   const $PAR_LOGIN constante que incluye los valores al logear
+ * @param   const $PAR_CREAR_CUENTA constante que incluye los valores al crear cuenta
+ */
 const PAR_LOGIN = ['login' => '', 'password' => ''];
 const PAR_CREAR_CUENTA = ['login' => '', 'password' => '', 'passwordRepeat' => ''];
 
+/**
+ * EXCEPCIONES PARA EL PROGRAMA
+ * @param   class ValidationException exception que se lanza en un determinado error.
+ * @param   class ParamException exception que se lanza en un determinado error.
+ * @param   class EmptyParamException exception que se lanza en un determinado error.
+ */
 class ValidationException extends Exception
 {}
 
@@ -12,11 +23,20 @@ class ParamException extends Exception
 class EmptyParamException extends Exception
 {}
 
+  /**
+   * Realiza una conexion con la base de datos
+   * @return PDO  Devuelve la sentencia PDO de la conexion a la base de datos
+   */
 function conectar()
 {
     return new PDO('pgsql:host=localhost;dbname=fa','fa','fa');
 }
 
+/**
+ * Comprueba las variables $_SESSION para saber si hay que mostrar algun mensaje
+ * @param   string $var nombre de la clave del array $_SESSION
+ * @param   string $tipo  Indica el tipo de alert que mostrará, si danger, info,...
+ */
 function compruebaSession($var, $tipo)
 { ?>
   <br>
@@ -30,11 +50,23 @@ function compruebaSession($var, $tipo)
     <?php endif;
 }
 
+/**
+ * Comprueba si algun parametro existe y si no lo inicializa a ''
+ * @param   string $buscador valor de la variable que se deberia pasar por $_GET
+ * y comprueba si existe y no es null.
+ * @return string devuelve el valor de la variable si existe y si no, devuelve ''.
+ */
 function existe($buscador)
 {
   return isset($_GET[$buscador]) ? trim($_GET[$buscador]) : '';
 }
 
+/**
+ * Comprueba si existe un usuario determinado
+ * @param   PDO $pdo Conexion con la base de datos
+ * @param   int $id     id del usuario que queremos buscar
+ * @return array  devuelve la fila de la consulta si existiese y si no, FALSE
+ */
 function buscarUsuario($pdo, $id)
 {
     $st = $pdo->prepare('SELECT * from usuarios WHERE id = :id');
@@ -44,6 +76,11 @@ function buscarUsuario($pdo, $id)
     return $st->fetch();
 }
 
+/**
+ *Función para insertar un usuario
+ * @param   PDO $pdo     Objeto PDO usado para conectar con la bd
+ * @param   array $fila  fila del alumno a insertar
+ */
 function insertarUsuario($pdo, $fila)
 {
   $st = $pdo->prepare('INSERT INTO usuarios (login, password)
@@ -51,6 +88,10 @@ function insertarUsuario($pdo, $fila)
   $st->execute([':login'=>$fila['login'],':password'=>password_hash($fila['password'],PASSWORD_DEFAULT)]);
 }
 
+/**
+ * Comprobamos si el ID es válido.
+ * @return int  $id Devuelve el $id en caso de que valide, si no salta Excepcion
+ */
 function comprobarId()
 {
     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -60,6 +101,10 @@ function comprobarId()
     return $id;
 }
 
+/**
+ * Comprobamos el array de errores, si no esta vacío lanza Exception
+ * @param   array $error array de errores
+ */
 function comprobarErrores(&$error)
 {
     if (!empty($error)) {
@@ -67,6 +112,11 @@ function comprobarErrores(&$error)
     }
 }
 
+/**
+ * Comprueba si los parametros pasados por POST son los que se esperan, lanza
+ *excepciones si no es asi.
+ * @param   string $par parametros a comprobar
+ */
 function comprobarParametros($par)
 {
     if (empty($_POST)) {
@@ -78,6 +128,11 @@ function comprobarParametros($par)
         }
 }
 
+/**
+ * Comprobar si al logear se ha introducido un usuario
+ * @param   array $error variable error para añadir error en caso de necesitarlo
+ * @return string $login si es '' -> error, si no, devuelve el login
+ */
 function comprobarLogin(&$error)
 {
   $login = trim(filter_input(INPUT_POST, 'login'));
@@ -88,6 +143,11 @@ function comprobarLogin(&$error)
   }
 }
 
+/**
+ * Comprobar si al logear se ha introducido una pass
+ * @param   array $error variable error para añadir error en caso de necesitarlo
+ * @return string $pass si es '' -> error, si no, devuelve la pass
+ */
 function comprobarPassword(&$error)
 {
   $pass = trim(filter_input(INPUT_POST, 'password'));
@@ -98,6 +158,14 @@ function comprobarPassword(&$error)
   }
 }
 
+/**
+ * Comprueba si las contraseñas coinciden y la repeticion no esta vacia en
+ * la creacion de una cuenta
+ * @param   array $error variable error para añadir error en caso de necesitarlo
+ * @param   string $password variable de la pass que compararemos con la repeticion
+ * @return string|bool $pass si no es '' y coinciden y false si no coincide o la
+ * repeticion es ''
+ */
 function comprobarPasswordNueva($password, &$error)
 {
   $pass = trim(filter_input(INPUT_POST, 'passwordRepeat'));
@@ -116,7 +184,6 @@ function comprobarPasswordNueva($password, &$error)
  * $valores, con el nombre y la contrasxeña dados.
  * @param   array $valores nombre y la contraseña
  * @param   PDO $pdo     Objeto PDO usado para buscar al usuario
- * @param  array $error   array de errores si los hay
  * @return array|bool          La fila del usuario si existe; o false si no.
  */
 
@@ -136,6 +203,13 @@ function comprobarUsuario($valores, $pdo)
   return false;
 }
 
+/**
+ * Cmprobar si el usuario que queremos crear, no existe ya
+ * @param   array $error variable error para añadir error en caso de necesitarlo
+ * @param   array $valores valores del usuario a insertar
+ * @param   PDO $pdo conexion con la base de datos usuarios
+ * @return array|bool $fila si el usuario ya existe o false si no existe
+ */
 function comprobarUsuarioNuevo($valores, $pdo, &$error)
 {
   extract($valores);
@@ -151,19 +225,33 @@ function comprobarUsuarioNuevo($valores, $pdo, &$error)
   }
 }
 
-
+/**
+ * Comprueba en el array si existe una clave
+ * @param   string $key Clave a buscar en el array error
+ * @param   array $error array para buscar si tiene una clave
+ * @return string devuelve 'has-error' si true, o '' si false
+ */
 function hasError($key, $error)
 {
-
     return array_key_exists($key, $error) ? 'has-error' : '';
 }
 
+/**
+ * Pinta un error si existe cierta clave en el array error
+ * @param   array $error variable error para saber si contiene la clave
+ * @param   string $key clave del error
+ */
 function mensajeError($key, $error)
 {
     if (isset($error[$key])){ ?>
         <small class="help-block"> <?= $error[$key] ?></small> <?php }
 }
 
+/**
+ * Muestra el pequeño formulario para crear_cuenta
+ * @param   array $error variable error para añadir error en caso de necesitarlo
+ * @param   array $valores contiene los valores que se pasan por post
+ */
 function mostrarCrearCuenta($valores, &$error)
 {
   ?>
@@ -205,6 +293,9 @@ function mostrarCrearCuenta($valores, &$error)
 <?php
 }
 
+/**
+ * Muestra el MENÚ inicial
+ */
 function mostrarMenu()
 {
   ?>
@@ -246,6 +337,11 @@ function mostrarMenu()
   <?php
 }
 
+/**
+ * Muestra el pequeño formulario para iniciar sesion
+ * @param   array $error variable error para añadir error en caso de necesitarlo
+ * @param   array $valores contiene los valores que se pasan para logear
+ */
 function mostrarLogin($valores, &$error)
 {
   ?><div class="row">
@@ -279,16 +375,27 @@ function mostrarLogin($valores, &$error)
  <?php
 }
 
+/**
+ * Sanea una cadena
+ * @param   string $cadena cadena a sanear
+ * @return  string cadena ya saneada.
+ */
 function h($cadena)
 {
     return htmlspecialchars($cadena, ENT_QUOTES);
 }
 
+/**
+ * Vuelve al indice del módulo que estes
+ */
 function irAlIndice()
 {
   header("Location: index.php");
 }
 
+/**
+ * Muestra un navegador en el menú principal
+ */
 function navegadorInicio()
 { ?>
 <nav class="navbar navbar-default">
@@ -314,6 +421,9 @@ function navegadorInicio()
 <?php
 }
 
+/**
+ * Muestra un navegador en el resto de módulos que no sea menu principal
+ */
 function navegador()
 { ?>
   <nav class="navbar navbar-default">
@@ -341,6 +451,11 @@ function navegador()
   <?php
 }
 
+/**
+ * Genera un div en el pie, para recordar al usuario que usamos cookies
+ * @param   string $pagina pagina en la que está para cuando cree la cookie
+ * , el crear_cookie lo devuelva a la  pagina donde estaba
+ */
 function politicaCookies($pagina)
 {
   if (!isset($_COOKIE['acepta'])): ?>
@@ -356,6 +471,9 @@ function politicaCookies($pagina)
   <?php endif;
 }
 
+/**
+ * Muestro un pie de pagina en todos los modulos
+ */
 function piePagina()
 {?>
   <nav class="navbar navbar-default navbar-fixed-bottom">
