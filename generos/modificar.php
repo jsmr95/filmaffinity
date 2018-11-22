@@ -15,11 +15,7 @@ navegador();
     <body>
       <?php
 
-      //Debe estar logueado para modificar una pelicula
-      if (!isset($_SESSION['usuario'])) {
-            $_SESSION['error'] = 'Debe iniciar sesión para modificar películas.';
-            irAlIndice();
-        }
+      compruebaLogueadoModificar('generos');
 
       try{
          $error = [];
@@ -40,11 +36,9 @@ navegador();
        $_SESSION['error'] = 'El género no ha sido modificado.';
        irAlIndice();
      }
-      ?>
-    <div class="container">
-        <?php mostrarFormularioGenero($fila ,$error, 'Modificar'); ?>
-    </div>
-    <?php piePagina();
+    mostrarFormularioGenero($fila ,$error, 'Modificar');
+    
+    piePagina();
     politicaCookies('../generos/modificar.php')?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

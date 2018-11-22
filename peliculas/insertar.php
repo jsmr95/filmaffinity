@@ -22,7 +22,6 @@ navegador();
             $pdo = conectar();
             comprobarParametros(PAR);
             $valores = array_map('trim', $_POST);
-
             $flt['titulo'] = comprobarTitulo($error);
             $flt['anyo'] = comprobarAnyo($error);
             $flt['sinopsis'] = trim(filter_input(INPUT_POST,'sinopsis'));

@@ -15,11 +15,7 @@ navegador();
     <body>
       <?php
 
-      //Debe estar logueado para modificar una pelicula
-      if (!isset($_SESSION['usuario'])) {
-            $_SESSION['error'] = 'Debe iniciar sesión para modificar películas.';
-            irAlIndice();
-        }
+      compruebaLogueadoModificar('peliculas');
 
       try{
          $error = [];

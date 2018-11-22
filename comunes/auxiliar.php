@@ -226,6 +226,35 @@ function comprobarUsuarioNuevo($valores, $pdo, &$error)
 }
 
 /**
+ * Compueba si el usuario esta logueado para permitirle borrar
+ * @param   string $modulo peliculas o generos
+ */
+function compruebaLogueadoBorrar($modulo)
+{
+  //El usuario debe estar logeado para poder borrar peliculas
+  if (!isset($_SESSION['usuario'])) {
+     $_SESSION['error'] = "Debe iniciar sesión para poder borrar $modulo";
+     irAlIndice();
+ } elseif ($_SESSION['usuario'] != 'admin') {
+     $_SESSION['error'] = "Debe ser administrador para poder borrar $modulo";
+     irAlIndice();
+ }
+}
+
+/**
+ * Compueba si el usuario esta logueado para permitirle modificar
+ * @param   string $modulo peliculas o generos
+ */
+function compruebaLogueadoModificar($modulo)
+{
+  //Debe estar logueado para modificar una pelicula
+  if (!isset($_SESSION['usuario'])) {
+        $_SESSION['error'] = "Debe iniciar sesión para modificar $modulo.";
+        irAlIndice();
+    }
+}
+
+/**
  * Comprueba en el array si existe una clave
  * @param   string $key Clave a buscar en el array error
  * @param   array $error array para buscar si tiene una clave
@@ -469,6 +498,28 @@ function politicaCookies($pagina)
     </div>
   </nav>
   <?php endif;
+}
+
+/**
+ * Pregunto si esta seguro de borrar la fila
+ * @param   int $id id de la pelicula o genero a borrar
+ */
+function preguntaSiEstaSeguroBorrar($id)
+{
+  ?>
+  <div class="container">
+    <div class="row">
+      <h3>¿Seguro que deseas borrar la fila ?</h3>
+      <div class="col-mg-4">
+        <form action="index.php" method="post" class="form-inline">
+          <input type="hidden" name="id" value="<?= $id ?>">
+          <input type="submit" value="Si" class="form-control btn btn-danger">
+          <a href="index.php" class="btn btn-success">No</a>
+        </form>
+      </div>
+    </div>
+  </div>
+  <?php
 }
 
 /**
