@@ -285,6 +285,8 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
 
     ?>
     <br>
+    <div class="container">
+    <br>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><?= $accion ?> una nueva película...</h3>
@@ -339,6 +341,7 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
             </form>
         </div>
     </div>
+  </div>
     <?php
 }
 
@@ -377,4 +380,47 @@ function generoSeleccionado($genero, $genero_id)
 function buscadorSeleccionado($buscador, $busca)
 {
   return $buscador == $busca ? "selected" : "";
+}
+
+/**
+ * Muestra el cuerpo del modulo peliculas
+ * @param   string $buscador valor por el que buscan ->titulo,año,...
+ * @param   string $busca valor busca dado por la constante BUSCADORES para comparar
+ * @param   array $error array para añadir errores
+ * @param   array $st array de la sentencia de la pelicula
+ */
+function cuerpoPeliculas($error, $buscador, $buscar, $st)
+{
+  ?>
+</div>
+<div class="row form-inline" id="busqueda">
+  <fieldset>
+    <legend>Buscar</legend>
+    <!-- Creamos un buscador de peliculas por titulo-->
+    <form action="" method="get" class="form-inline">
+      <div class="col-md-3">
+        <div class="panel panel-default" id="fondoTabla">
+          <div class="panel-body">
+            <div class="form-group <?= hasError($buscador, $error) ?>">
+              <label for="buscar">Buscar por <?= opcionesBuscar($buscador) ?>:</label>
+              <input id="buscar" type="text" name="buscar"
+              value="<?= $buscar ?>" class="form-control">
+              <?php mensajeError($buscador, $error) ?>
+            </div>
+          </div>
+        </div>
+        <input type="submit" value="Buscar" class="btn btn-primary">
+      </div>
+    </form>
+  </fieldset>
+</div>
+<hr>
+<?= mostrarPeliculas($st); ?>
+<div class="row">
+  <div class="text-center">
+    <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
+  </div>
+</div>
+</div>
+<?php
 }
