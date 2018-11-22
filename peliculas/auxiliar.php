@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * CONSTANTES
+ * @param   PAR constantes de los valores de una pelicula
+ * @param   BUSCADORES constantes de los buscadores
+ */
 const PAR = [
     'titulo' => '',
     'anyo' => '',
@@ -10,6 +15,10 @@ const PAR = [
 
 const BUSCADORES = ['título','año','duración','género'];
 
+/**
+ * Muestra las opciones por las que puedo buscar peliculas
+ * @param   string $buscador valor del buscador seleccionado
+ */
 function opcionesBuscar($buscador)
 {
   ?>
@@ -25,6 +34,14 @@ function opcionesBuscar($buscador)
   </select><?php
 }
 
+/**
+ * Saca las peliculas segun los buscadores
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   string $buscador valor por el que busca -> ej: titulo
+ * @param   string $buscar valor cual buscar -> ej: torrente
+ * @param   array $error array para meter errores
+ * @return array|bool Devuelve la fila de la pelicula o false si no existe
+ */
 function sacaPeliculasBuscadores($pdo,$buscador, $buscar,&$error)
 {
   if ($buscador == 'título' || $buscador == '') {
@@ -84,6 +101,12 @@ function sacaPeliculasBuscadores($pdo,$buscador, $buscar,&$error)
     }
 }
 
+/**
+ * Busca una pelicula por un id
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   int $id ID de la pelicula que quiere buscar
+ * @return array|bool Devuelve la fila de la pelicula o false si no existe
+ */
 function buscarPelicula($pdo, $id)
 {
     $st = $pdo->prepare('SELECT * from peliculas WHERE id = :id');
@@ -93,6 +116,11 @@ function buscarPelicula($pdo, $id)
     return $st->fetch();
 }
 
+/**
+ * Aplica restricciones al titulo
+ * @param   array $error array para meter errores
+ * @return string devulve el titulo
+ */
 function comprobarTitulo(&$error)
 {
     $fltTitulo = trim(filter_input(INPUT_POST, 'titulo'));
@@ -104,6 +132,11 @@ function comprobarTitulo(&$error)
     return $fltTitulo;
 }
 
+/**
+ * Aplica restricciones a año
+ * @param   array $error array de errores
+ * @return array|bool devuelve el año o false
+ */
 function comprobarAnyo(&$error)
 {
     $fltAnyo = filter_input(INPUT_POST,'anyo',FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 9999], ]);
@@ -113,6 +146,11 @@ function comprobarAnyo(&$error)
     return $fltAnyo;
 }
 
+/**
+ * Aplica restricciones a duracion
+ * @param   array $error array de errores
+ * @return array|bool devuelve la duracion o false
+ */
 function comprobarDuracion(&$error)
 {
     $fltDuracion = trim(filter_input(INPUT_POST, 'duracion'));
@@ -131,6 +169,12 @@ function comprobarDuracion(&$error)
     return $fltDuracion;
 }
 
+/**
+ * Aplica restricciones a genero_id
+ * @param   PDO  $pdo conexion con la base de datos
+ * @param   array $error array de errores
+ * @return array|bool devuelve el genero_id o false
+ */
 function comprobarGeneroId($pdo, &$error)
 {
     $fltGeneroId = filter_input(INPUT_POST, 'genero_id',FILTER_VALIDATE_INT);
@@ -147,6 +191,11 @@ function comprobarGeneroId($pdo, &$error)
     return $fltGeneroId;
 }
 
+/**
+ * Inserta una pelicula
+ * @param   PDO $pdo conexion con la base de datos
+ * @param   array  $fila fila que se desea insertar en peliculas
+ */
 function insertarPelicula($pdo, $fila)
 {
     $st = $pdo->prepare('INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
@@ -154,6 +203,12 @@ function insertarPelicula($pdo, $fila)
     $st->execute($fila);
 }
 
+/**
+ * Modificar una pelicula
+ * @param   PDO $pdo conexion con la base de datos
+ * @param   array  $fila fila que se desea modificar en peliculas
+ * @param   int $id de la pelicula que no se incluye en $fila
+ */
 function modificarPelicula($pdo, $fila, $id)
 {
     $st = $pdo->prepare('UPDATE peliculas
@@ -166,6 +221,10 @@ function modificarPelicula($pdo, $fila, $id)
     $st->execute($fila + ['id' => $id]);
 }
 
+/**
+ * Muestra las peliculas segun el PDOStatement dado por los buscadores
+ * @param   PDOStatement $st resultado de la consulta, la cual se mostrará
+ */
 function mostrarPeliculas($st)
 {
   ?>
@@ -211,6 +270,13 @@ function mostrarPeliculas($st)
   <?php
 }
 
+/**
+ * Formulario para modificar o insertar una pelicula
+ * @param   array  $valores fila que se desea insertar o mod en peliculas
+ * @param   array  $error array de errores
+ * @param   PDO $pdo conexion con la base de datos
+ * @param   string  $accion accion que se realiza, insertar o modificar
+ */
 function mostrarFormulario($valores, $error, $pdo, $accion)
 {
     extract($valores);
@@ -276,6 +342,12 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
     <?php
 }
 
+/**
+ * Comprobamos si la pelicula existe y si no, exception
+ * @param   PDO $pdo conexcion con la bd
+ * @param   int $id ID de la pelicula a consultar
+ * @return array|bool devuelve la pelicula o false
+ */
 function comprobarPelicula($pdo, $id)
 {
     $fila = buscarPelicula($pdo, $id);
@@ -285,11 +357,23 @@ function comprobarPelicula($pdo, $id)
     return $fila;
 }
 
+/**
+ * Compruebas si dos valores son iguales para marcar como selected
+ * @param   int $genero id del genero de una bd
+ * @param   int $genero_id id del genero de otra bd
+ * @return string devuelve selected o '' si son iguales o no
+ */
 function generoSeleccionado($genero, $genero_id)
 {
   return $genero == $genero_id ? "selected" : "";
 }
 
+/**
+ * Compruebas si dos valores son iguales para marcar como selected
+ * @param   string $buscador valor por el que buscan ->titulo,año,...
+ * @param   string $busca valor busca dado por la constante BUSCADORES para comparar
+ * @return string devuelve selected o '' si son iguales o no
+ */
 function buscadorSeleccionado($buscador, $busca)
 {
   return $buscador == $busca ? "selected" : "";

@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * Constante de generos
+ * @param   array PAR1 array constante de generos
+ */
 const PAR1 = [
     'genero' => '',
 ];
 
+/**
+ * Busca un genero por un id
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   int $id ID del genero que quiere buscar
+ * @return array|bool Devuelve la fila del genero o false si no existe
+ */
 function buscarGenero($pdo, $id)
 {
   $st = $pdo->prepare('SELECT * FROM generos WHERE id = :id');
@@ -11,6 +21,12 @@ function buscarGenero($pdo, $id)
   return $st->fetch();
 }
 
+/**
+ * Comprobar si un genero existe
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   int $id ID del genero que quiere buscar
+ * @return array|bool Devuelve la fila del genero o false si no existe y aparte lanza Exception
+ */
 function comprobarGeneroExiste($pdo, $id)
 {
     $fila = buscarGenero($pdo, $id);
@@ -20,6 +36,12 @@ function comprobarGeneroExiste($pdo, $id)
     return $fila;
 }
 
+/**
+ * Compruebo si el genero esta siendo usado por una pelicula
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   int $id ID del genero que quiere buscar
+ * @return array|bool Devuelve la fila del genero o false si no esta siendo usado
+ */
 function compruebaGeneroEnUso($pdo, $id)
 {
   $st = $pdo->prepare('SELECT * from peliculas WHERE genero_id = :id;');
@@ -27,6 +49,12 @@ function compruebaGeneroEnUso($pdo, $id)
   return $st->fetch();
 }
 
+/**
+ * Saca los generos buscados para luego mostrarlos
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   string $buscarGenero valor a buscar dentro de generos
+ * @return PDOStatement Devuelve el resultado de la sentencia o false
+ */
 function sacaGeneros($pdo, $buscarGenero)
 {
   $st = $pdo->prepare('SELECT *
@@ -39,6 +67,10 @@ function sacaGeneros($pdo, $buscarGenero)
   return $st;
 }
 
+/**
+ * Muestra los generos
+ * @param   PDOStatement $st Resultado de la sentencia para mostrar los generos
+ */
 function mostrarGeneros($st)
 {
   ?>
@@ -74,6 +106,12 @@ function mostrarGeneros($st)
 </div> <?php
 }
 
+/**
+ * Formulario para insertar o modificar
+ * @param   array $valores valores para mantener en el modificar
+ * @param   array $error array para añadir error si hiciera falta
+ * @param   string $accion Accion que vamos a realizar, modificar o insertar
+ */
 function mostrarFormularioGenero($valores, $error, $accion)
 {
 
@@ -98,6 +136,11 @@ function mostrarFormularioGenero($valores, $error, $accion)
   <?php
 }
 
+/**
+ * Insertar un genero
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   array $fila valores del genero a insertar
+ */
 function insertarGenero($pdo, $fila)
 {
   $st = $pdo->prepare('INSERT INTO generos (genero)
@@ -105,6 +148,13 @@ function insertarGenero($pdo, $fila)
   $st->execute($fila);
 }
 
+/**
+ * Comprueba si el genero esta en la bd ya o no y comprueba si por POST se ha
+ * introducido y le aplica restricciones
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   array $error array para añadir error si hiciera falta
+ * @return array $fltGenero devuelve la fila del genero si existe
+ */
 function comprobarGenero($pdo, &$error)
 {
   $fltGenero = filter_input(INPUT_POST, 'genero');
@@ -122,6 +172,12 @@ function comprobarGenero($pdo, &$error)
   return $fltGenero;
 }
 
+/**
+ * Modifica un genero
+ * @param   PDO $pdo Conexion con la base de datos generos
+ * @param   int $id ID del genero que quiere modificar
+ * @param   array $fila fila del genero que quiere modificar
+ */
 function modificarGenero($pdo, $fila, $id)
 {
     $st = $pdo->prepare('UPDATE generos
