@@ -117,6 +117,8 @@ function mostrarFormularioGenero($valores, $error, $accion)
 
   extract($valores);
   ?>
+  <br>
+  <div class="container">
   <div class="panel panel-primary">
       <div class="panel-heading">
           <h3 class="panel-title"><?= $accion ?> un Género...</h3>
@@ -132,6 +134,7 @@ function mostrarFormularioGenero($valores, $error, $accion)
               <a href="index.php" class="btn btn-info">Volver</a>
           </form>
       </div>
+  </div>
   </div>
   <?php
 }
@@ -184,4 +187,40 @@ function modificarGenero($pdo, $fila, $id)
                             SET genero = :genero
                             WHERE id = :id');
     $st->execute($fila + ['id' => $id]);
+}
+
+/**
+ * Cuerpo del genero
+ * @param   PDOStatement $st sentencia resultado de los buscadores de gneros
+ * @param   string $buscarGenero valor por el que buscar
+ */
+function cuerpoGeneros($st, $buscarGenero)
+{
+  ?>
+</div>
+<div class="row" id="busqueda">
+<div class="col-md-12">
+  <!-- Creamos un buscador de peliculas por Genero-->
+    <fieldset>
+      <legend>Buscar</legend>
+      <form action="" method="get" class="form-inline">
+        <div class="form-group">
+          <label for="buscarGenero">Buscar por género:</label>
+          <input id="buscarGenero" type="text" name="buscarGenero"
+          value="<?= $buscarGenero ?>" class="form-control">
+        </div>
+        <input type="submit" value="Buscar" class="btn btn-primary">
+      </form>
+    </fieldset>
+  </div>
+</div>
+<hr>
+<?= mostrarGeneros($st); ?>
+<div class="row">
+<div class="text-center">
+  <a href="insertar.php" class="btn btn-info">Insertar un nuevo género</a>
+</div>
+</div>
+</div>
+<?php
 }

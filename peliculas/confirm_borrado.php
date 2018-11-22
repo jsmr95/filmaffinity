@@ -15,14 +15,7 @@ navegador();
     <body>
         <?php
 
-        //El usuario debe estar logeado para poder borrar peliculas
-        if (!isset($_SESSION['usuario'])) {
-           $_SESSION['error'] = 'Debe iniciar sesión para poder borrar películas';
-           irAlIndice();
-       } elseif ($_SESSION['usuario'] != 'admin') {
-           $_SESSION['error'] = 'Debe ser administrador para poder borrar películas';
-           irAlIndice();
-       }
+        compruebaLogueadoBorrar('peliculas');
 
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
@@ -34,20 +27,8 @@ navegador();
         if (!buscarPelicula($pdo, $id)) {
             irAlIndice();
         }
-        ?>
-        <div class="container">
-          <div class="row">
-            <h3>¿Seguro que deseas borrar la fila ?</h3>
-            <div class="col-mg-4">
-              <form action="index.php" method="post" class="form-inline">
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <input type="submit" value="Si" class="form-control btn btn-danger">
-                <a href="index.php" class="btn btn-success">No</a>
-              </form>
-            </div>
-          </div>
-        </div>
-        <?php piePagina(); ?>
+        preguntaSiEstaSeguroBorrar($id);
+        piePagina(); ?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </body>

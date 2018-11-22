@@ -44,35 +44,11 @@ navegador();
                 }
                 $pdo->commit();
             }
-            $buscarGenero = existe('buscarGenero');
-            $st = sacaGeneros($pdo, $buscarGenero);
-            ?>
-          </div>
-        <div class="row" id="busqueda">
-          <div class="col-md-12">
-            <!-- Creamos un buscador de peliculas por Genero-->
-              <fieldset>
-                <legend>Buscar</legend>
-                <form action="" method="get" class="form-inline">
-                  <div class="form-group">
-                    <label for="buscarGenero">Buscar por género:</label>
-                    <input id="buscarGenero" type="text" name="buscarGenero"
-                    value="<?= $buscarGenero ?>" class="form-control">
-                  </div>
-                  <input type="submit" value="Buscar" class="btn btn-primary">
-                </form>
-              </fieldset>
-            </div>
-          </div>
-          <hr>
-          <?= mostrarGeneros($st); ?>
-        <div class="row">
-          <div class="text-center">
-            <a href="insertar.php" class="btn btn-info">Insertar un nuevo género</a>
-          </div>
-        </div>
-      </div>
-      <?php
+      $buscarGenero = existe('buscarGenero');
+      $st = sacaGeneros($pdo, $buscarGenero);
+
+      cuerpoGeneros($st,$buscarGenero);
+      
       piePagina();
       //MUESTRO LA NAV SI NO EXISTE LA COOKIE
       politicaCookies('../generos/index.php') ?>

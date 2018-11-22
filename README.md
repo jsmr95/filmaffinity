@@ -12,8 +12,8 @@ Vamos a crear un pequeño FilmAffinity con bases de datos, usaremos SELECT, INSE
 - Un *alert* para errores.                                                --DONE
 - Poder buscar películas por otros criterios: año, duración, género.      --DONE
 - Usar `h()` donde corresponda para evitar problemas de XSS.              --DONE
-- Evitar duplicidades y refactorizar.
-- Documentar todo el código con DocBlocks.
+- Evitar duplicidades y refactorizar.                                     --DONE
+- Documentar todo el código con DocBlocks.                                --DONE
 ------------------------------------------------------
 # Por hacer propio(no tarea):
 

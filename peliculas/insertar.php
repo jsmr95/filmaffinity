@@ -22,7 +22,6 @@ navegador();
             $pdo = conectar();
             comprobarParametros(PAR);
             $valores = array_map('trim', $_POST);
-
             $flt['titulo'] = comprobarTitulo($error);
             $flt['anyo'] = comprobarAnyo($error);
             $flt['sinopsis'] = trim(filter_input(INPUT_POST,'sinopsis'));
@@ -38,12 +37,10 @@ navegador();
             $_SESSION['error'] = 'La película no ha sido insertada.';
             irAlIndice();
         }
-        ?>
-        <br>
-        <div class="container">
-            <?php mostrarFormulario($valores, $error, $pdo, 'Insertar'); ?>
-        </div>
-        <?php piePagina();
+
+        mostrarFormulario($valores, $error, $pdo, 'Insertar');
+
+        piePagina();
         politicaCookies('../peliculas/insertar.php')?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

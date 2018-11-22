@@ -43,45 +43,14 @@ navegador();
           }
           $pdo->commit();
         }
-        $error = [];
-        $buscar = existe('buscar');
-        $buscador = existe('buscador');
+    $error = [];
+    $buscar = existe('buscar');
+    $buscador = existe('buscador');
 
-        $st = sacaPeliculasBuscadores($pdo,$buscador, $buscar, $error);
+    $st = sacaPeliculasBuscadores($pdo,$buscador, $buscar, $error);
 
-        ?>
-      </div>
+    cuerpoPeliculas($error,$buscador,$buscar,$st);
 
-      <div class="row form-inline" id="busqueda">
-        <fieldset>
-          <legend>Buscar</legend>
-          <!-- Creamos un buscador de peliculas por titulo-->
-          <form action="" method="get" class="form-inline">
-            <div class="col-md-3">
-              <div class="panel panel-default" id="fondoTabla">
-                <div class="panel-body">
-                  <div class="form-group <?= hasError($buscador, $error) ?>">
-                    <label for="buscar">Buscar por <?= opcionesBuscar($buscador) ?>:</label>
-                    <input id="buscar" type="text" name="buscar"
-                    value="<?= $buscar ?>" class="form-control">
-                    <?php mensajeError($buscador, $error) ?>
-                  </div>
-                </div>
-              </div>
-              <input type="submit" value="Buscar" class="btn btn-primary">
-            </div>
-          </form>
-        </fieldset>
-      </div>
-  <hr>
-      <?= mostrarPeliculas($st); ?>
-      <div class="row">
-        <div class="text-center">
-          <a href="insertar.php" class="btn btn-info">Insertar una nueva película</a>
-        </div>
-      </div>
-    </div>
-    <?php
     piePagina();
     //MUESTRO LA NAV SI NO EXISTE LA COOKIE
     politicaCookies('../peliculas/index.php') ?>
