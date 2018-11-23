@@ -37,68 +37,52 @@ function opcionesBuscar($buscador)
 /**
  * Saca las peliculas segun los buscadores
  * @param   PDO $pdo Conexion con la base de datos generos
- * @param   string $buscador valor por el que busca -> ej: titulo
- * @param   string $buscar valor cual buscar -> ej: torrente
+ * @param   string $valores por el que busca -> ej: titulo
  * @param   array $error array para meter errores
- * @return array|bool Devuelve la fila de la pelicula o false si no existe
  */
-function sacaPeliculasBuscadores($pdo,$buscador, $buscar,&$error)
+function sacaPeliculasBuscadores($pdo,$valores,$error)
 {
-  if ($buscador == 'título' || $buscador == '') {
-    $st = $pdo->prepare('SELECT p.*, genero
-                        FROM peliculas p
-                        JOIN generos g
-                        ON genero_id = g.id
-                        WHERE position(lower(:titulo) in lower(titulo)) != 0 '); //position es como mb_substrpos() de php, devuelve 0
-                                                                                //si no encuentra nada. ponemos lower() de postgre para
-                                                                                //que no distinga entre mayu y minus
-    //En execute(:titulo => "$valor"), indicamos lo que vale nuestros marcadores de prepare(:titulo)
-    $st->execute([':titulo' => "$buscar"]);
-    return $st;
-
-  }elseif ($buscador == 'género') {
-    $st = $pdo->prepare('SELECT p.*, genero
-                        FROM peliculas p
-                        JOIN generos g
-                        ON genero_id = g.id
-                        WHERE position(lower(:genero) in lower(genero)) != 0 ');
-    $st->execute([':genero' => "$buscar"]);
-    return $st;
-  }
-
-  elseif ($buscador == 'duración') {
-    if ($buscar == '') {
-      $error['duración'] = 'La duración no puede estar vacía.';
-      return false;
-    }else {
-    $st = $pdo->prepare('SELECT p.*, genero
-                        FROM peliculas p
-                        JOIN generos g
-                        ON genero_id = g.id
-                        WHERE :duracion = duracion');
-
-    $st->execute([':duracion' => "$buscar"]);
-    return $st;
+    extract($valores);
+    $where = $execute = [];
+    if (isset($_GET['buscarTitulo'])) {
+        $buscarTitulo = trim($_GET['buscarTitulo']);
+        if ($buscarTitulo !== '') {
+            $where[] = 'titulo ILIKE :titulo';
+            $execute[':titulo'] = "%$buscarTitulo%";
+        }
     }
-
-  } elseif ($buscador == 'año') {
-      if ($buscar == '') {
-        $error['año'] = 'El año no puede estar vacío.';
-        return false;
-      }elseif ($buscar <1000 || $buscar > 9999) {
-        $error['año'] = 'El año debe ser de 4 números.';
-        return false;
-      }else {
-    $st = $pdo->prepare('SELECT p.*, genero
-                        FROM peliculas p
-                        JOIN generos g
-                        ON genero_id = g.id
-                        WHERE :anyo = anyo ');
-
-    $st->execute([':anyo' => "$buscar"]);
-    return $st;
-      }
+    if (isset($_GET['buscarAnyo'])) {
+        $buscarAnyo = trim($_GET['buscarAnyo']);
+        if ($buscarAnyo !== '') {
+            $where[] = 'anyo::text = :anyo';
+            $execute[':anyo'] = $buscarAnyo;
+        }
     }
+    if (isset($_GET['buscarDuracion'])) {
+        $buscarDuracion = trim($_GET['buscarDuracion']);
+        if ($buscarDuracion !== '') {
+            $where[] = 'duracion::text = :duracion';
+            $execute[':duracion'] = $buscarDuracion;
+        }
+    }
+    if (isset($_GET['buscarGenero'])) {
+        $buscarGenero = trim($_GET['buscarGenero']);
+        if ($buscarGenero !== '') {
+            $where[] = 'genero_id::text = :genero_id';
+            $execute[':genero_id'] = $buscarGenero;
+        }
+    }
+    $where = empty($where) ? '' : 'WHERE ' . implode(' AND ', $where);
+    $st = $pdo->prepare("SELECT p.*, genero
+                           FROM peliculas p
+                           JOIN generos g
+                             ON genero_id = g.id
+                             $where
+                       ORDER BY id");
+    $st->execute($execute);
+    $generos = recogerGeneros($pdo);
+    cuerpoPeliculas($error,$valores,$st,$generos);
+
 }
 
 /**
@@ -242,6 +226,7 @@ function mostrarPeliculas($st)
           <tbody>
               <?php
               if ($st !== false) {
+                $var = 0; //Creo esta variable, para saber si entra en el while o no y mostrar un mensaje en caso de que no
                 while ($fila = $st->fetch()): ?> <!-- Podemos asignarselo a fila, ya que en la asignación,
                                                         tb devuelve la fila, si la hay, por lo que entra,cuando no hay mas filas, da false y se sale.-->
                 <tr>
@@ -261,8 +246,19 @@ function mostrarPeliculas($st)
                          </a>
                     </td>
                 </tr>
-              <?php endwhile;
-            }  ?>
+              <?php
+                $var = 1;
+                endwhile;
+            }
+            if (!$fila = $st->fetch()): ?>
+                <?php if ($var === 0): ?>
+                    <tr>
+                        <td colspan="6">
+                            <h3>No se han encontrado resultados con sus criterios.</h3>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+          <?php endif;?>
         </tbody>
       </table>
     </div>
@@ -327,7 +323,7 @@ function mostrarFormulario($valores, $error, $pdo, $accion)
                         <?php
                         foreach ($generos as $genero):
                           ?>
-                            <option value="<?= $genero['id'] ?>" <?= generoSeleccionado($genero['id'], $genero_id) ?>>
+                            <option value="<?= $genero['id'] ?>" <?= selected($genero['id'], $genero_id) ?>>
                                 <?= $genero['genero'] ?>
                             </option>
                           <?php
@@ -366,20 +362,9 @@ function comprobarPelicula($pdo, $id)
  * @param   int $genero_id id del genero de otra bd
  * @return string devuelve selected o '' si son iguales o no
  */
-function generoSeleccionado($genero, $genero_id)
+function selected($genero, $genero_id)
 {
   return $genero == $genero_id ? "selected" : "";
-}
-
-/**
- * Compruebas si dos valores son iguales para marcar como selected
- * @param   string $buscador valor por el que buscan ->titulo,año,...
- * @param   string $busca valor busca dado por la constante BUSCADORES para comparar
- * @return string devuelve selected o '' si son iguales o no
- */
-function buscadorSeleccionado($buscador, $busca)
-{
-  return $buscador == $busca ? "selected" : "";
 }
 
 /**
@@ -389,8 +374,9 @@ function buscadorSeleccionado($buscador, $busca)
  * @param   array $error array para añadir errores
  * @param   array $st array de la sentencia de la pelicula
  */
-function cuerpoPeliculas($error, $buscador, $buscar, $st)
+function cuerpoPeliculas($error,$valores, $st,$generos)
 {
+    extract($valores);
   ?>
 </div>
 <div class="row form-inline" id="busqueda">
@@ -401,16 +387,57 @@ function cuerpoPeliculas($error, $buscador, $buscar, $st)
       <div class="col-md-3">
         <div class="panel panel-default" id="fondoTabla">
           <div class="panel-body">
-            <div class="form-group <?= hasError($buscador, $error) ?>">
-              <label for="buscar">Buscar por <?= opcionesBuscar($buscador) ?>:</label>
-              <input id="buscar" type="text" name="buscar"
-              value="<?= $buscar ?>" class="form-control">
-              <?php mensajeError($buscador, $error) ?>
+            <div class="form-group <?= hasError($buscarTitulo, $error) ?>">
+              <label for="buscarTitulo">Buscar por título:</label>
+              <input id="buscarTitulo" type="text" name="buscarTitulo"
+              value="<?= $buscarTitulo ?>" class="form-control">
+              <?php mensajeError($buscarTitulo, $error) ?>
             </div>
           </div>
         </div>
-        <input type="submit" value="Buscar" class="btn btn-primary">
       </div>
+      <div class="col-md-3">
+        <div class="panel panel-default" id="fondoTabla">
+          <div class="panel-body">
+            <div class="form-group <?= hasError($buscarAnyo, $error) ?>">
+              <label for="buscarAnyo">Buscar por año:</label>
+              <input id="buscarAnyo" type="text" name="buscarAnyo"
+              value="<?= $buscarAnyo ?>" class="form-control">
+              <?php mensajeError($buscarAnyo, $error) ?>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="panel panel-default" id="fondoTabla">
+          <div class="panel-body">
+            <div class="form-group <?= hasError($buscarDuracion, $error) ?>">
+              <label for="buscarDuracion">Buscar por duración:</label>
+              <input id="buscarDuracion" type="text" name="buscarDuracion"
+              value="<?= $buscarDuracion ?>" class="form-control">
+              <?php mensajeError($buscarDuracion, $error) ?>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="panel panel-default" id="fondoTabla">
+          <div class="panel-body">
+            <div class="form-group <?= hasError($buscarGenero, $error) ?>">
+                <label for="buscarAnyo">Buscar por género:</label>
+                <select id="buscarGenero" name="buscarGenero" class="form-control">
+                    <option value=""></option>
+                    <?php foreach ($generos as $fila): ?>
+                        <option value="<?= $fila['id'] ?>" <?= selected($fila['id'], $buscarGenero) ?> >
+                            <?= $fila['genero'] ?>
+                        </option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="submit" value="Buscar" class="btn btn-primary">
     </form>
   </fieldset>
 </div>

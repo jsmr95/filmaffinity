@@ -24,7 +24,7 @@ da error de passIncorrect                                                 --DONE
 
 # Hecho de más:
 
-- Implementar crear_cuenta con enlace en login.
+- Implementar crear_cuenta con enlace en login.                           --DONE
 
 # Investigar:
 

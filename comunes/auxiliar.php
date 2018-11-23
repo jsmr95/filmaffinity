@@ -405,6 +405,16 @@ function mostrarLogin($valores, &$error)
 }
 
 /**
+ * Devuelve todos los generos
+ * @param   PDO $pdo conexion con la base de datos
+ * @return  PDOStatement sentencia de la consulta realizada
+ */
+function recogerGeneros($pdo)
+{
+    return $pdo->query('SELECT * FROM generos')->fetchAll();
+}
+
+/**
  * Sanea una cadena
  * @param   string $cadena cadena a sanear
  * @return  string cadena ya saneada.

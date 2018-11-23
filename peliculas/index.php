@@ -44,12 +44,14 @@ navegador();
           $pdo->commit();
         }
     $error = [];
-    $buscar = existe('buscar');
-    $buscador = existe('buscador');
+    $buscarTitulo = existe('buscarTitulo');
+    $buscarAnyo = existe('buscarAnyo');
+    $buscarDuracion = existe('buscarDuracion');
+    $buscarGenero = existe('buscarGenero');
+    $valores = compact("buscarTitulo","buscarAnyo","buscarDuracion","buscarGenero");
 
-    $st = sacaPeliculasBuscadores($pdo,$buscador, $buscar, $error);
-
-    cuerpoPeliculas($error,$buscador,$buscar,$st);
+    $st = sacaPeliculasBuscadores($pdo,$valores,$error);
+    
 
     piePagina();
     //MUESTRO LA NAV SI NO EXISTE LA COOKIE
